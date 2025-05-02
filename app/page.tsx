@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import Head from 'next/head';
 
 const ShaderGradient = dynamic(() => import('./components/ShaderGradient'), { ssr: false });
 
@@ -25,6 +26,20 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Head>
+        <title>Codavra – Modern Web Development Agency</title>
+        <meta name="description" content="Codavra builds sleek, responsive websites and web apps for modern brands, startups, and creators. Next.js, Framer Motion, 3D, and seamless API integrations." />
+        <link rel="canonical" href="https://codavra.com/" />
+        <meta property="og:title" content="Codavra – Modern Web Development Agency" />
+        <meta property="og:description" content="Sleek, responsive websites and web apps for modern brands. Next.js, Framer Motion, 3D, and seamless API integrations." />
+        <meta property="og:image" content="/Codavra.png" />
+        <meta property="og:url" content="https://codavra.com/" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Codavra – Modern Web Development Agency" />
+        <meta name="twitter:description" content="Sleek, responsive websites and web apps for modern brands. Next.js, Framer Motion, 3D, and seamless API integrations." />
+        <meta name="twitter:image" content="/Codavra.png" />
+      </Head>
       {/* Single navbar that transforms on scroll */}
       <motion.header 
         className="fixed top-0 left-0 right-0 z-50 px-4 py-4"
@@ -227,7 +242,7 @@ export default function Home() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Reach Out to Us</h2>
           <p className="text-lg text-white/80 mb-6">We'd love to hear from you! For project inquiries, partnerships, or just to say hello, contact us below.</p>
           <div className="flex flex-col items-center gap-2">
-            <span className="text-white/90">Email: <a href="mailto:hello@codavra.com" className="underline hover:text-[#ff9c75]">info@codavra.com</a></span>
+            <span className="text-white/90">Email: <a href="mailto:info@codavra.com" className="underline hover:text-[#ff9c75]">info@codavra.com</a></span>
             <span className="text-white/90">Phone: <a href="tel:+1234567890" className="underline hover:text-[#ff9c75]">+1 (416) 474-6869</a></span>
             <span className="text-white/90">Location: Remote / Global</span>
           </div>
