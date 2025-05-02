@@ -227,8 +227,8 @@ export default function Home() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Reach Out to Us</h2>
           <p className="text-lg text-white/80 mb-6">We'd love to hear from you! For project inquiries, partnerships, or just to say hello, contact us below.</p>
           <div className="flex flex-col items-center gap-2">
-            <span className="text-white/90">Email: <a href="mailto:hello@codavra.com" className="underline hover:text-[#ff9c75]">hello@codavra.com</a></span>
-            <span className="text-white/90">Phone: <a href="tel:+1234567890" className="underline hover:text-[#ff9c75]">+1 (234) 567-890</a></span>
+            <span className="text-white/90">Email: <a href="mailto:hello@codavra.com" className="underline hover:text-[#ff9c75]">info@codavra.com</a></span>
+            <span className="text-white/90">Phone: <a href="tel:+1234567890" className="underline hover:text-[#ff9c75]">+1 (416) 474-6869</a></span>
             <span className="text-white/90">Location: Remote / Global</span>
           </div>
         </div>
@@ -251,10 +251,7 @@ export default function Home() {
               <h3 className="font-semibold text-lg mb-2">How do I get started?</h3>
               <p className="text-white/80">Just reach out via email or phone, and we'll schedule a free consultation to discuss your project and goals.</p>
             </div>
-            <div className="py-6">
-              <h3 className="font-semibold text-lg mb-2">Do you offer ongoing support?</h3>
-              <p className="text-white/80">Yes, we offer maintenance and support packages to keep your site running smoothly and securely.</p>
-            </div>
+            
           </div>
         </div>
       </section>
