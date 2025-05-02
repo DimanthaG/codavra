@@ -75,7 +75,7 @@ export default function Home() {
               />
             )}
             
-            <div className="flex items-center gap-2 relative">
+            <div className="flex items-center gap-2 relative w-full justify-center md:justify-start">
               <img src="/Codavra.png" alt="Codavra Logo" className="h-10 w-auto" />
             </div>
             
