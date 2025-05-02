@@ -1,15 +1,87 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 const ShaderGradient = dynamic(() => import('./components/ShaderGradient'), { ssr: false });
 
 export default function Home() {
+  const [scrolled, setScrolled] = useState(false);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 100;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrolled]);
+
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section with Gradient */}
-      <section className="relative h-screen overflow-hidden">
+      {/* Single navbar that transforms on scroll */}
+      <motion.header 
+        className="fixed top-0 left-0 right-0 z-50 px-4 py-4"
+        initial={false}
+      >
+        <div className="container mx-auto">
+          <motion.div 
+            className="flex items-center justify-between mx-auto relative"
+            layout
+            style={{
+              width: scrolled ? "min(90%, 1152px)" : "100%",
+              backgroundColor: scrolled ? "rgba(18, 18, 32, 0.95)" : "transparent",
+              backdropFilter: scrolled ? "blur(20px) saturate(180%)" : "none",
+              WebkitBackdropFilter: scrolled ? "blur(20px) saturate(180%)" : "none",
+              borderRadius: scrolled ? "9999px" : "0px",
+              padding: scrolled ? "12px 32px" : "8px 0px",
+              boxShadow: scrolled ? "0 8px 32px rgba(0, 0, 0, 0.2)" : "none",
+              border: scrolled ? "1px solid rgba(255, 255, 255, 0.08)" : "none",
+            }}
+            transition={{ 
+              duration: 0.3,
+              ease: [0.23, 1, 0.32, 1]
+            }}
+          >
+            {/* Glassmorphism highlight effect */}
+            {scrolled && (
+              <div 
+                className="absolute inset-0 rounded-full"
+                style={{
+                  background: "linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 100%)",
+                  pointerEvents: "none"
+                }}
+              />
+            )}
+            
+            <div className="flex items-center gap-2 relative">
+              <span className="text-white font-bold text-xl">Codavra</span>
+            </div>
+            
+            <nav className="hidden md:flex items-center gap-8 relative">
+              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Use Cases</a>
+              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Pricing</a>
+              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Manifesto</a>
+              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Careers</a>
+              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Help Center</a>
+            </nav>
+            
+            <div className="flex items-center gap-4 relative">
+              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Log In</a>
+              <a href="#" className="bg-white/90 backdrop-blur-sm text-[#0e0e20] px-4 py-2 rounded-full text-sm font-medium hover:bg-white transition-colors">Sign Up</a>
+            </div>
+          </motion.div>
+        </div>
+      </motion.header>
+      
+      {/* Hero Section with Shader Gradient */}
+      <section className="relative h-screen">
         <ShaderGradient />
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
           <motion.div
@@ -20,17 +92,17 @@ export default function Home() {
           >
             <div className="inline-block mb-10 bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/5">
               <p className="text-sm text-white/80">
-                Welcome to the Next Generation
+                Welcome to Codavra
               </p>
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-4 text-white">
-              <div>Advanced AI</div>
+              <div>We Build</div>
               <div className="relative">
                 <span className="bg-white/10 backdrop-blur-md px-3 py-1 rounded border border-white/10">Solutions</span> 
                 <span className="ml-4">for</span>
               </div>
-              <div className="text-[#ff9c75] mt-4">Modern Workflows</div>
+              <div className="text-[#ff9c75] mt-4">Modern Companies</div>
             </h1>
             
             <p className="text-xl md:text-2xl mb-10 text-white/80 mt-8 max-w-2xl mx-auto">
@@ -55,28 +127,11 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
-
-        {/* Enhanced transition area with multiple gradient layers */}
-        <div className="absolute bottom-0 left-0 right-0 h-48 z-10">
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080808] to-transparent"></div>
-          <div className="absolute inset-0 bg-[#6d1c1c]/5 backdrop-blur-sm"></div>
-
-          {/* Floating glassmorphism elements */}
-          <div className="absolute top-8 left-1/4 w-40 h-12 bg-white/5 backdrop-blur-xl rounded-full transform rotate-12 opacity-30"></div>
-          <div className="absolute top-16 right-1/3 w-32 h-8 bg-[#ff9c75]/5 backdrop-blur-xl rounded-full transform -rotate-6 opacity-20"></div>
-          <div className="absolute top-4 right-1/4 w-28 h-10 bg-white/5 backdrop-blur-xl rounded-full transform rotate-3 opacity-25"></div>
-        </div>
       </section>
 
-      {/* Features Section with Enhanced Glassmorphism Cards */}
-      <section className="bg-[#080808] text-white py-24 px-4 relative">
-        {/* Additional glassmorphism elements in the background */}
-        <div className="absolute top-0 left-0 right-0 h-40 overflow-hidden">
-          <div className="absolute -top-20 left-1/5 w-64 h-64 rounded-full bg-[#6d1c1c]/10 backdrop-blur-3xl opacity-30"></div>
-          <div className="absolute -top-10 right-1/4 w-80 h-80 rounded-full bg-[#ff9c75]/5 backdrop-blur-3xl opacity-20"></div>
-        </div>
-
-        <div className="container mx-auto max-w-6xl relative z-10">
+      {/* Features Section with clean black background */}
+      <section className="bg-[#090910] text-white py-24 px-4">
+        <div className="container mx-auto max-w-6xl">
           <motion.h2 
             className="text-4xl md:text-5xl font-bold text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -87,17 +142,14 @@ export default function Home() {
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Card 1 - Enhanced */}
+            {/* Card 1 */}
             <motion.div 
-              className="bg-[#101022]/70 backdrop-blur-xl rounded-xl overflow-hidden border border-[#222244]/70 transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 card-transition relative group"
+              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              {/* Glassmorphism highlight */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              <div className="p-6 relative z-10">
+              <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-2xl font-semibold">Smart Coding</h3>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff9c75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
@@ -105,7 +157,7 @@ export default function Home() {
                 <p className="text-gray-300 mb-4">
                   AI-powered code suggestions that understand your codebase context for higher productivity.
                 </p>
-                <div className="bg-[#080818]/70 backdrop-blur-sm p-4 rounded-lg border border-[#222244]/50">
+                <div className="bg-[#0a0a0a] p-4 rounded-lg border border-[#222]">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="w-3 h-3 rounded-full bg-blue-500"></span>
                     <span className="text-sm text-blue-400">Analyzing code structure...</span>
@@ -121,17 +173,14 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Card 2 - Enhanced */}
+            {/* Card 2 */}
             <motion.div 
-              className="bg-[#101022]/70 backdrop-blur-xl rounded-xl overflow-hidden border border-[#222244]/70 transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 card-transition relative group"
+              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              {/* Glassmorphism highlight */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              <div className="p-6 relative z-10">
+            >  
+              <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-2xl font-semibold">Visual Analysis</h3>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff9c75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" x2="12" y1="8" y2="8"/><line x1="3.95" x2="8.54" y1="6.06" y2="14"/><line x1="10.88" x2="15.46" y1="21.94" y2="14"/></svg>
@@ -139,24 +188,24 @@ export default function Home() {
                 <p className="text-gray-300 mb-4">
                   Advanced visualization tools that break down complex data into intuitive insights.
                 </p>
-                <div className="bg-[#080818]/70 backdrop-blur-sm p-4 rounded-lg border border-[#222244]/50">
+                <div className="bg-[#0a0a0a] p-4 rounded-lg border border-[#222]">
                   <div className="flex justify-between mb-2">
-                    <div className="h-24 w-2 bg-[#151530] rounded-full overflow-hidden relative">
+                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
                       <div className="absolute bottom-0 w-full bg-purple-500 h-[60%]"></div>
                     </div>
-                    <div className="h-24 w-2 bg-[#151530] rounded-full overflow-hidden relative">
+                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
                       <div className="absolute bottom-0 w-full bg-blue-500 h-[40%]"></div>
                     </div>
-                    <div className="h-24 w-2 bg-[#151530] rounded-full overflow-hidden relative">
+                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
                       <div className="absolute bottom-0 w-full bg-green-500 h-[85%]"></div>
                     </div>
-                    <div className="h-24 w-2 bg-[#151530] rounded-full overflow-hidden relative">
+                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
                       <div className="absolute bottom-0 w-full bg-yellow-500 h-[25%]"></div>
                     </div>
-                    <div className="h-24 w-2 bg-[#151530] rounded-full overflow-hidden relative">
+                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
                       <div className="absolute bottom-0 w-full bg-red-500 h-[70%]"></div>
                     </div>
-                    <div className="h-24 w-2 bg-[#151530] rounded-full overflow-hidden relative">
+                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
                       <div className="absolute bottom-0 w-full bg-indigo-500 h-[45%]"></div>
                     </div>
                   </div>
@@ -165,17 +214,14 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Card 3 - Enhanced */}
+            {/* Card 3 */}
             <motion.div 
-              className="bg-[#101022]/70 backdrop-blur-xl rounded-xl overflow-hidden border border-[#222244]/70 transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 card-transition relative group"
+              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              {/* Glassmorphism highlight */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              <div className="p-6 relative z-10">
+              <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-2xl font-semibold">Seamless Integration</h3>
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff9c75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" y2="12"/></svg>
@@ -183,28 +229,28 @@ export default function Home() {
                 <p className="text-gray-300 mb-4">
                   Works flawlessly with your existing tools and workflow without disruption.
                 </p>
-                <div className="bg-[#080818]/70 backdrop-blur-sm p-4 rounded-lg border border-[#222244]/50 flex flex-wrap gap-2 justify-center">
-                  <div className="bg-[#151530] p-2 rounded flex items-center gap-1 border border-blue-500/20">
+                <div className="bg-[#0a0a0a] p-4 rounded-lg border border-[#222] flex flex-wrap gap-2 justify-center">
+                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-blue-500/20">
                     <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                     <span className="text-xs text-gray-400">VSCode</span>
                   </div>
-                  <div className="bg-[#151530] p-2 rounded flex items-center gap-1 border border-purple-500/20">
+                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-purple-500/20">
                     <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
                     <span className="text-xs text-gray-400">GitHub</span>
                   </div>
-                  <div className="bg-[#151530] p-2 rounded flex items-center gap-1 border border-green-500/20">
+                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-green-500/20">
                     <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                     <span className="text-xs text-gray-400">Slack</span>
                   </div>
-                  <div className="bg-[#151530] p-2 rounded flex items-center gap-1 border border-red-500/20">
+                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-red-500/20">
                     <span className="w-2 h-2 bg-red-500 rounded-full"></span>
                     <span className="text-xs text-gray-400">Figma</span>
                   </div>
-                  <div className="bg-[#151530] p-2 rounded flex items-center gap-1 border border-yellow-500/20">
+                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-yellow-500/20">
                     <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
                     <span className="text-xs text-gray-400">Notion</span>
                   </div>
-                  <div className="bg-[#151530] p-2 rounded flex items-center gap-1 border border-indigo-500/20">
+                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-indigo-500/20">
                     <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
                     <span className="text-xs text-gray-400">Jira</span>
                   </div>
@@ -216,7 +262,7 @@ export default function Home() {
           <div className="text-center mt-16">
             <motion.a 
               href="#" 
-              className="inline-flex items-center gap-2 bg-[#6d1c1c]/80 backdrop-blur-sm text-white px-8 py-3 rounded-full font-medium hover:bg-[#7d2c2c] transition-colors border border-[#ff9c75]/20 shadow-lg shadow-black/20"
+              className="inline-flex items-center gap-2 bg-[#6d1c1c] text-white px-8 py-3 rounded-full font-medium hover:bg-[#7d2c2c] transition-colors border border-[#ff9c75]/20 shadow-lg shadow-black/20"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 }}

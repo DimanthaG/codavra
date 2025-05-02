@@ -1,6 +1,5 @@
 import './styles/globals.css'
 import { Inter } from 'next/font/google'
-import { NavBarDemo } from "./components/ui/tubelight-navbar-demo"
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -15,7 +14,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body className="min-h-screen overflow-x-hidden">
-        <NavBarDemo />
         <main>
           {children}
         </main>
