@@ -31,11 +31,15 @@ const fragmentShader = `
     vec3 color = mix(topColor, bottomColor, pow(uv.y, 1.3));
     
     // Breathing animation for central circle
-    float breathe = sin(time * 0.3) * 0.5 + 0.5; // Slower breathing
+    float breathe = sin(time * 0.8) * 0.5 + 0.5; // much faster breathing
     float breatheExp = pow(breathe, 0.5);
-    
-    // Create breathing black circle in center - 60% BIGGER
-    float blackCircle = circle(centeredUv, 0.72 + breatheExp * 0.1, 0.6);
+    // Move the circle up as it breathes
+    centeredUv.y += breatheExp * 0.08;
+    // Make the circle shrink to about 50% of its max size
+    float minRadius = 0.5; // 50% of max
+    float maxRadius = 1.008;
+    float radius = mix(minRadius, maxRadius, breatheExp);
+    float blackCircle = circle(centeredUv, radius, 0.6);
     
     // Apply black circle - darker in the center
     vec3 darkCenter = vec3(0.05, 0.02, 0.04);

@@ -61,21 +61,14 @@ export default function Home() {
             )}
             
             <div className="flex items-center gap-2 relative">
-              <span className="text-white font-bold text-xl">Codavra</span>
+              <img src="/Codavra.png" alt="Codavra Logo" className="h-10 w-auto" />
             </div>
             
             <nav className="hidden md:flex items-center gap-8 relative">
-              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Use Cases</a>
-              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Pricing</a>
-              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Manifesto</a>
-              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Careers</a>
-              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Help Center</a>
+              <a href="#features" className="text-white/90 hover:text-white text-sm transition-colors">Features</a>
+              <a href="#contact" className="text-white/90 hover:text-white text-sm transition-colors">Contact</a>
+              <a href="#faq" className="text-white/90 hover:text-white text-sm transition-colors">FAQ</a>
             </nav>
-            
-            <div className="flex items-center gap-4 relative">
-              <a href="#" className="text-white/90 hover:text-white text-sm transition-colors">Log In</a>
-              <a href="#" className="bg-white/90 backdrop-blur-sm text-[#0e0e20] px-4 py-2 rounded-full text-sm font-medium hover:bg-white transition-colors">Sign Up</a>
-            </div>
           </motion.div>
         </div>
       </motion.header>
@@ -97,16 +90,14 @@ export default function Home() {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-4 text-white">
-              <div>We Build</div>
+              <div>We Craft Websites</div>
               <div className="relative">
-                <span className="bg-white/10 backdrop-blur-md px-3 py-1 rounded border border-white/10">Solutions</span> 
-                <span className="ml-4">for</span>
+                <span className="bg-white/10 backdrop-blur-md px-3 py-1 rounded border border-white/10">That Grow with You</span>
               </div>
-              <div className="text-[#ff9c75] mt-4">Modern Companies</div>
             </h1>
             
-            <p className="text-xl md:text-2xl mb-10 text-white/80 mt-8 max-w-2xl mx-auto">
-              Enhance your productivity with state-of-the-art AI tools designed for creative professionals.
+            <p className="text-l md:text-xl mb-10 text-white/80 mt-8 max-w-2xl mx-auto">
+              Bring your ideas to life with sleek, responsive websites and smart tools built for creators, startups, and businesses ready to scale.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -115,14 +106,14 @@ export default function Home() {
                 className="bg-white/90 backdrop-blur-sm text-[#6d1c1c] px-6 py-3 rounded-full font-medium hover:bg-white transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#ff9c75]/10"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57.7 1 1.52 1 2.43 0 1.65-.67 3.13-1.76 4.2"/><path d="M5.76 17.4C4.7 16.36 4 14.87 4 13c0-2.07 1.34-3.94 3.36-4.74.96-.32 2-.32 3 0 .17-.82.47-1.63.89-2.38-1.89-.5-3.22.3-3.22.3C5.5 6.94 4.69 8.5 4.22 10"/><path d="M20 11c-.41-1.74-1.92-3.04-4.5-4C13.82 6.47 12 5.5 12 5.5c-.49.46-1 1.22-1 3.5"/><path d="M12 16a4 4 0 0 1-4-4 6.5 6.5 0 0 0-1-.77C5.73 10.24 6 8.5 6 8.5c.65.13 1.25.33 1.8.6"/><path d="M10.97 9.33c-.4.52-.63 1.11-.69 1.75A3.97 3.97 0 0 1 12 11c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3c0-.09 0-.19.01-.28"/><path d="m9.45 6.32.14-.17C14 2.5 17.5 5 17.5 5l.23.26"/><path d="M15.24 12.45c.15.28.43.57.82.82.75.47 1.47.58 1.87.44"/></svg>
-                Try Codavra Free
+                 Start Building with Codavra
               </a>
               <a
                 href="#"
                 className="bg-[#6d1c1c]/30 backdrop-blur-md border border-[#ff9c75]/20 text-white px-6 py-3 rounded-full font-medium hover:bg-[#6d1c1c]/50 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-black/20"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2v-2"/><path d="m9 18 6-6"/><path d="M15 18v-6h-6"/></svg>
-                Explore Features
+                 See What We Offer
               </a>
             </div>
           </motion.div>
@@ -130,7 +121,7 @@ export default function Home() {
       </section>
 
       {/* Features Section with clean black background */}
-      <section className="bg-[#090910] text-white py-24 px-4">
+      <section id="features" className="bg-[#090910] text-white py-24 px-4">
         <div className="container mx-auto max-w-6xl">
           <motion.h2 
             className="text-4xl md:text-5xl font-bold text-center mb-16"
@@ -142,120 +133,76 @@ export default function Home() {
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Card 1 */}
+            {/* Card 1: Client Logo Carousel */}
             <motion.div 
-              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group"
+              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group flex flex-col items-center justify-center min-h-[320px]"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-semibold">Smart Coding</h3>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff9c75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
-                </div>
-                <p className="text-gray-300 mb-4">
-                  AI-powered code suggestions that understand your codebase context for higher productivity.
-                </p>
-                <div className="bg-[#0a0a0a] p-4 rounded-lg border border-[#222]">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="w-3 h-3 rounded-full bg-blue-500"></span>
-                    <span className="text-sm text-blue-400">Analyzing code structure...</span>
-                  </div>
-                  <div className="font-mono text-sm text-gray-400">
-                    <div>function <span className="text-blue-400">calculateMetrics</span>(data) {"{"}</div>
-                    <div className="pl-4">const results = data.<span className="text-green-400">map</span>((item) {"=>"} {"{"}</div>
-                    <div className="pl-6 text-yellow-400">// AI suggestion: optimize with memoization</div>
-                    <div className="pl-4">{"});"}</div>
-                    <div>{"}"}</div>
-                  </div>
+              <h3 className="text-2xl font-semibold mb-4 text-center">Trusted by Forward-Thinking Brands</h3>
+              <div className="w-full flex items-center justify-center overflow-hidden py-4">
+                <div className="relative w-full">
+                  <motion.div
+                    className="flex gap-8"
+                    style={{ minWidth: 'max-content', display: 'flex' }}
+                    animate={{ x: ['0%', '-50%'] }}
+                    transition={{ repeat: Infinity, repeatType: 'loop', duration: 16, ease: 'linear' }}
+                  >
+                    {/* Duplicate logos for seamless infinite scroll */}
+                    <img src="/next.svg" alt="Next.js" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
+                    <img src="/vercel.svg" alt="Vercel" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
+                    <img src="/globe.svg" alt="Globe" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
+                    <img src="/window.svg" alt="Window" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
+                    <img src="/file.svg" alt="File" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
+                    {/* Repeat for infinite effect */}
+                    <img src="/next.svg" alt="Next.js" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
+                    <img src="/vercel.svg" alt="Vercel" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
+                    <img src="/globe.svg" alt="Globe" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
+                    <img src="/window.svg" alt="Window" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
+                    <img src="/file.svg" alt="File" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
+                  </motion.div>
                 </div>
               </div>
+              <div className="text-xs text-gray-500 text-center mt-2">From SaaS to eCommerce, agencies to creators</div>
             </motion.div>
 
-            {/* Card 2 */}
+            {/* Card 2: Visual-first Development */}
             <motion.div 
-              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group"
+              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group flex flex-col items-center justify-center min-h-[320px]"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-            >  
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-semibold">Visual Analysis</h3>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff9c75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" x2="12" y1="8" y2="8"/><line x1="3.95" x2="8.54" y1="6.06" y2="14"/><line x1="10.88" x2="15.46" y1="21.94" y2="14"/></svg>
-                </div>
-                <p className="text-gray-300 mb-4">
-                  Advanced visualization tools that break down complex data into intuitive insights.
-                </p>
-                <div className="bg-[#0a0a0a] p-4 rounded-lg border border-[#222]">
-                  <div className="flex justify-between mb-2">
-                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
-                      <div className="absolute bottom-0 w-full bg-purple-500 h-[60%]"></div>
-                    </div>
-                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
-                      <div className="absolute bottom-0 w-full bg-blue-500 h-[40%]"></div>
-                    </div>
-                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
-                      <div className="absolute bottom-0 w-full bg-green-500 h-[85%]"></div>
-                    </div>
-                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
-                      <div className="absolute bottom-0 w-full bg-yellow-500 h-[25%]"></div>
-                    </div>
-                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
-                      <div className="absolute bottom-0 w-full bg-red-500 h-[70%]"></div>
-                    </div>
-                    <div className="h-24 w-2 bg-[#151515] rounded-full overflow-hidden relative">
-                      <div className="absolute bottom-0 w-full bg-indigo-500 h-[45%]"></div>
-                    </div>
-                  </div>
-                  <div className="text-xs text-gray-500 text-center">Performance metrics visualization</div>
-                </div>
+            >
+              <h3 className="text-2xl font-semibold mb-4 text-center">Visual-first Development</h3>
+              <div className="flex flex-col items-center gap-2 mb-4">
+                <span className="inline-block bg-[#ff9c75]/10 text-[#ff9c75] px-3 py-1 rounded-full text-xs font-medium border border-[#ff9c75]/20">Next.js</span>
+                <span className="inline-block bg-[#ff9c75]/10 text-[#ff9c75] px-3 py-1 rounded-full text-xs font-medium border border-[#ff9c75]/20">Framer Motion</span>
+                <span className="inline-block bg-[#ff9c75]/10 text-[#ff9c75] px-3 py-1 rounded-full text-xs font-medium border border-[#ff9c75]/20">Three.js</span>
               </div>
+              <p className="text-gray-300 text-center mb-2">
+                We build intuitive, responsive, and design-driven websites. Our team collaborates closely with you to bring your ideas to life—combining beautiful UI, smooth animations, and 3D when it matters.
+              </p>
+              <div className="text-xs text-gray-500 text-center">Built for creators, startups, and brands that care about design</div>
             </motion.div>
 
-            {/* Card 3 */}
+            {/* Card 3: Seamless Integrations */}
             <motion.div 
-              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group"
+              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group flex flex-col items-center justify-center min-h-[320px]"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl font-semibold">Seamless Integration</h3>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff9c75" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" y2="12"/></svg>
-                </div>
-                <p className="text-gray-300 mb-4">
-                  Works flawlessly with your existing tools and workflow without disruption.
-                </p>
-                <div className="bg-[#0a0a0a] p-4 rounded-lg border border-[#222] flex flex-wrap gap-2 justify-center">
-                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-blue-500/20">
-                    <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    <span className="text-xs text-gray-400">VSCode</span>
-                  </div>
-                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-purple-500/20">
-                    <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                    <span className="text-xs text-gray-400">GitHub</span>
-                  </div>
-                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-green-500/20">
-                    <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                    <span className="text-xs text-gray-400">Slack</span>
-                  </div>
-                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-red-500/20">
-                    <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-                    <span className="text-xs text-gray-400">Figma</span>
-                  </div>
-                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-yellow-500/20">
-                    <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                    <span className="text-xs text-gray-400">Notion</span>
-                  </div>
-                  <div className="bg-[#151515] p-2 rounded flex items-center gap-1 border border-indigo-500/20">
-                    <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
-                    <span className="text-xs text-gray-400">Jira</span>
-                  </div>
-                </div>
+              <h3 className="text-2xl font-semibold mb-4 text-center">Seamless Integrations</h3>
+              <div className="flex flex-wrap gap-3 justify-center mb-4">
+                <span className="inline-flex items-center gap-2 bg-[#222] px-3 py-1 rounded-full text-xs text-white border border-[#ff9c75]/20"><svg width="16" height="16" fill="none" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#635BFF"/><text x="12" y="16" textAnchor="middle" fontSize="10" fill="#fff">Stripe</text></svg>Stripe</span>
+                <span className="inline-flex items-center gap-2 bg-[#222] px-3 py-1 rounded-full text-xs text-white border border-[#ff9c75]/20"><svg width="16" height="16" fill="none" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#FF5D01"/><text x="12" y="16" textAnchor="middle" fontSize="10" fill="#fff">Contentful</text></svg>Contentful</span>
+                <span className="inline-flex items-center gap-2 bg-[#222] px-3 py-1 rounded-full text-xs text-white border border-[#ff9c75]/20"><svg width="16" height="16" fill="none" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#3ECF8E"/><text x="12" y="16" textAnchor="middle" fontSize="10" fill="#fff">Supabase</text></svg>Supabase</span>
               </div>
+              <p className="text-gray-300 text-center mb-2">
+                We integrate the best modern APIs and tools—like Stripe, Contentful, and Supabase—to create scalable, maintainable web apps tailored to your needs.
+              </p>
+              <div className="text-xs text-gray-500 text-center">API-first, future-proof, and ready to scale</div>
             </motion.div>
           </div>
 
@@ -273,6 +220,72 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="bg-[#0e0e20] text-white py-20 px-4 border-t border-white/10">
+        <div className="container mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Reach Out to Us</h2>
+          <p className="text-lg text-white/80 mb-6">We'd love to hear from you! For project inquiries, partnerships, or just to say hello, contact us below.</p>
+          <div className="flex flex-col items-center gap-2">
+            <span className="text-white/90">Email: <a href="mailto:hello@codavra.com" className="underline hover:text-[#ff9c75]">hello@codavra.com</a></span>
+            <span className="text-white/90">Phone: <a href="tel:+1234567890" className="underline hover:text-[#ff9c75]">+1 (234) 567-890</a></span>
+            <span className="text-white/90">Location: Remote / Global</span>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="bg-[#090910] text-white py-20 px-4 border-t border-white/10">
+        <div className="container mx-auto max-w-2xl">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">Frequently Asked Questions</h2>
+          <div className="divide-y divide-white/10">
+            <div className="py-6">
+              <h3 className="font-semibold text-lg mb-2">Is Codavra suitable for startups and small businesses?</h3>
+              <p className="text-white/80">Absolutely! We work with companies of all sizes, from solo founders to established enterprises, and tailor our solutions to your needs.</p>
+            </div>
+            <div className="py-6">
+              <h3 className="font-semibold text-lg mb-2">What technologies do you use?</h3>
+              <p className="text-white/80">We specialize in Next.js, React, Framer Motion, Three.js, and integrate with modern APIs like Stripe, Contentful, and Supabase.</p>
+            </div>
+            <div className="py-6">
+              <h3 className="font-semibold text-lg mb-2">How do I get started?</h3>
+              <p className="text-white/80">Just reach out via email or phone, and we'll schedule a free consultation to discuss your project and goals.</p>
+            </div>
+            <div className="py-6">
+              <h3 className="font-semibold text-lg mb-2">Do you offer ongoing support?</h3>
+              <p className="text-white/80">Yes, we offer maintenance and support packages to keep your site running smoothly and securely.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer with ShaderGradient inside */}
+      <footer className="bg-[#0e0e20]/80 backdrop-blur-md text-white py-10 px-4 border-t border-white/10 mt-0 relative overflow-hidden rounded-t-3xl">
+        {/* Shader gradient background for footer (inside) */}
+        <div className="absolute inset-0 w-full h-full pointer-events-none -z-10">
+          <ShaderGradient />
+        </div>
+        <div className="container mx-auto max-w-6xl flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex flex-col items-center md:items-start gap-2">
+            <img src="/Codavra.png" alt="Codavra Logo" className="h-16 w-auto mb-2" />
+            <span className="text-white/70 text-sm">Modern web solutions for brands that want to grow.</span>
+            <div className="flex gap-4 mt-2">
+              <a href="https://www.instagram.com/heycodavra/" target="_blank" rel="noopener noreferrer" className="hover:text-[#ff9c75]" aria-label="Instagram"><svg width="20" height="20" fill="none" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="5" fill="none" stroke="currentColor" strokeWidth="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg></a>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row gap-8 text-center md:text-left">
+            <div>
+              <span className="font-semibold text-lg">Links</span>
+              <ul className="mt-2 space-y-1">
+                <li><a href="#features" className="hover:text-[#ff9c75]">Features</a></li>
+                <li><a href="#contact" className="hover:text-[#ff9c75]">Contact</a></li>
+                <li><a href="#faq" className="hover:text-[#ff9c75]">FAQ</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div className="text-center text-white/40 text-xs mt-8">© {new Date().getFullYear()} Codavra. All rights reserved.</div>
+      </footer>
     </div>
   );
 }
