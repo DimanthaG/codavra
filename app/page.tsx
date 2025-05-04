@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { InfiniteSlider } from "@/components/ui/infinite-slider";
 
 const ShaderGradient = dynamic(() => import('./components/ShaderGradient'), { ssr: false });
 
@@ -117,19 +118,12 @@ export default function Home() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="#"
+                href="#features"
                 className="bg-white/90 backdrop-blur-sm text-[#6d1c1c] px-6 py-3 rounded-full font-medium hover:bg-white transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#ff9c75]/10"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57.7 1 1.52 1 2.43 0 1.65-.67 3.13-1.76 4.2"/><path d="M5.76 17.4C4.7 16.36 4 14.87 4 13c0-2.07 1.34-3.94 3.36-4.74.96-.32 2-.32 3 0 .17-.82.47-1.63.89-2.38-1.89-.5-3.22.3-3.22.3C5.5 6.94 4.69 8.5 4.22 10"/><path d="M20 11c-.41-1.74-1.92-3.04-4.5-4C13.82 6.47 12 5.5 12 5.5c-.49.46-1 1.22-1 3.5"/><path d="M12 16a4 4 0 0 1-4-4 6.5 6.5 0 0 0-1-.77C5.73 10.24 6 8.5 6 8.5c.65.13 1.25.33 1.8.6"/><path d="M10.97 9.33c-.4.52-.63 1.11-.69 1.75A3.97 3.97 0 0 1 12 11c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3c0-.09 0-.19.01-.28"/><path d="m9.45 6.32.14-.17C14 2.5 17.5 5 17.5 5l.23.26"/><path d="M15.24 12.45c.15.28.43.57.82.82.75.47 1.47.58 1.87.44"/></svg>
-                 Start Building with Codavra
+                 Start Building Your Company's Future with Codavra
               </a>
-              <a
-                href="#"
-                className="bg-[#6d1c1c]/30 backdrop-blur-md border border-[#ff9c75]/20 text-white px-6 py-3 rounded-full font-medium hover:bg-[#6d1c1c]/50 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-black/20"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2v-2"/><path d="m9 18 6-6"/><path d="M15 18v-6h-6"/></svg>
-                 See What We Offer
-              </a>
+             
             </div>
           </motion.div>
         </div>
@@ -150,7 +144,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 1: Client Logo Carousel */}
             <motion.div 
-              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group flex flex-col items-center justify-center min-h-[320px]"
+              className="bg-[#101010] rounded-xl overflow-hidden padding-10 transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group flex flex-col items-center justify-center min-h-[320px]"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -158,25 +152,25 @@ export default function Home() {
               <h3 className="text-2xl font-semibold mb-4 text-center">Trusted by Forward-Thinking Brands</h3>
               <div className="w-full flex items-center justify-center overflow-hidden py-4">
                 <div className="relative w-full">
-                  <motion.div
-                    className="flex gap-8"
-                    style={{ minWidth: 'max-content', display: 'flex' }}
-                    animate={{ x: ['0%', '-50%'] }}
-                    transition={{ repeat: Infinity, repeatType: 'loop', duration: 16, ease: 'linear' }}
-                  >
-                    {/* Duplicate logos for seamless infinite scroll */}
-                    <img src="/next.svg" alt="Next.js" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
-                    <img src="/vercel.svg" alt="Vercel" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
-                    <img src="/globe.svg" alt="Globe" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
-                    <img src="/window.svg" alt="Window" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
-                    <img src="/file.svg" alt="File" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
-                    {/* Repeat for infinite effect */}
-                    <img src="/next.svg" alt="Next.js" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
-                    <img src="/vercel.svg" alt="Vercel" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
-                    <img src="/globe.svg" alt="Globe" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
-                    <img src="/window.svg" alt="Window" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
-                    <img src="/file.svg" alt="File" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition" />
-                  </motion.div>
+                <InfiniteSlider gap={24} reverse className="w-full h-full bg-[#101010]">
+                  <img
+                    src="https://www.raytronics.lk/logos/06.svg"
+                    alt="Apple Music logo"
+                    className="h-[120px] w-auto"
+                  />
+                  <img
+                    src="https://www.ajlandscaper.com/_next/image?url=%2Fimages%2Flogohorizontal.png&w=1920&q=75"
+                    alt="Chrome logo"
+                    className="h-[80px] w-[80%]"
+                  />
+                  <img
+                    src="https://www.rayrealtysl.com/static/media/RayRealty.ad292067d7979485ef29c1045e2a4b92.svg"
+                    alt="Strava logo"
+                    className="h-[120px] w-auto"
+                  />
+                  
+                  
+                </InfiniteSlider>
                 </div>
               </div>
               <div className="text-xs text-gray-500 text-center mt-2">From SaaS to eCommerce, agencies to creators</div>
@@ -184,7 +178,7 @@ export default function Home() {
 
             {/* Card 2: Visual-first Development */}
             <motion.div 
-              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group flex flex-col items-center justify-center min-h-[320px]"
+              className="bg-[#101010] rounded-xl overflow-hidden p-6 transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group flex flex-col items-center justify-center min-h-[320px]"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -203,7 +197,7 @@ export default function Home() {
 
             {/* Card 3: Seamless Integrations */}
             <motion.div 
-              className="bg-[#101010] rounded-xl overflow-hidden border border-[#222] transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group flex flex-col items-center justify-center min-h-[320px]"
+              className="bg-[#101010] rounded-xl overflow-hidden p-6 transition-all duration-300 hover:border-[#ff9c75]/40 hover:shadow-lg hover:shadow-[#ff9c75]/5 relative group flex flex-col items-center justify-center min-h-[320px]"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
