@@ -18,7 +18,14 @@ export function TextShimmer({
   duration = 2,
   spread = 2,
 }: TextShimmerProps) {
-  const MotionComponent = motion(Component as keyof JSX.IntrinsicElements);
+  // Only allow string HTML tag names for motion dynamic component
+  const MotionComponent = useMemo(() => {
+    if (typeof Component === 'string') {
+      return (motion as any)[Component] as React.ElementType;
+    }
+    // fallback to motion.p if not a string
+    return motion.p;
+  }, [Component]);
 
   const dynamicSpread = useMemo(() => {
     return children.length * spread;
@@ -40,12 +47,10 @@ export function TextShimmer({
         duration,
         ease: 'linear',
       }}
-      style={
-        {
-          '--spread': `${dynamicSpread}px`,
-          backgroundImage: `var(--bg), linear-gradient(var(--base-color), var(--base-color))`,
-        } as React.CSSProperties
-      }
+      style={{
+        '--spread': `${dynamicSpread}px`,
+        backgroundImage: `var(--bg), linear-gradient(var(--base-color), var(--base-color))`,
+      } as React.CSSProperties}
     >
       {children}
     </MotionComponent>
