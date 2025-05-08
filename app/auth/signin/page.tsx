@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
@@ -13,38 +13,38 @@ function SignInContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/meeting/create';
+  const hasRedirected = useRef(false);
 
   useEffect(() => {
     // Debug logging
-    console.log('Session state:', { session, status, callbackUrl });
+    console.log('Session state:', { session, status, callbackUrl, hasRedirectedYet: hasRedirected.current });
     
-    if (status === 'loading') return;
+    // Prevent redirect loops
+    if (status === 'loading' || hasRedirected.current) return;
     
     if (session) {
       try {
-        // Check if user is admin and trying to access admin page
-        const isAdminRoute = callbackUrl.includes('/admin/');
-        const isAdmin = session.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+        // Prevent multiple redirects
+        if (hasRedirected.current) return;
+        hasRedirected.current = true;
         
-        console.log('Auth state:', { isAdminRoute, isAdmin, userEmail: session.user?.email, adminEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL });
+        console.log('Auth state:', { 
+          userEmail: session.user?.email, 
+          adminEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL,
+          pathname: window.location.pathname
+        });
         
-        let redirectUrl = callbackUrl;
-        
-        if (isAdminRoute && !isAdmin) {
-          console.log('Non-admin trying to access admin route, redirecting to /meeting/create');
-          redirectUrl = '/meeting/create';
-        } else if (isAdmin && isAdminRoute) {
-          console.log('Admin accessing admin route, following callback URL:', callbackUrl);
-        } else {
-          console.log('Normal user, following callback URL:', callbackUrl);
+        // If we're already at the desired location, don't redirect
+        if (window.location.pathname !== '/auth/signin') {
+          console.log('Already at target location, skipping redirect');
+          return;
         }
-
-        // Use window.location for hard redirect
-        window.location.href = redirectUrl;
+        
+        // Simple redirect to fixed location to break the loop
+        console.log('Redirecting to /meeting/create');
+        window.location.replace('/meeting/create');
       } catch (error) {
         console.error('Error during redirect:', error);
-        // Fallback to router.replace if window.location fails
-        router.replace('/meeting/create');
       }
     }
   }, [session, status, router, callbackUrl]);
@@ -52,7 +52,7 @@ function SignInContent() {
   const handleSignIn = () => {
     console.log('Starting sign in with callback URL:', callbackUrl);
     signIn('google', { 
-      callbackUrl,
+      callbackUrl: '/meeting/create', // Force a specific callback URL
       redirect: true,
     });
   };
@@ -61,6 +61,15 @@ function SignInContent() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
+
+  // Don't show the sign-in UI if already authenticated
+  if (status === 'authenticated') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-white">You are signed in. Redirecting...</div>
       </div>
     );
   }
