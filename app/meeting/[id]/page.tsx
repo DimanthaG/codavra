@@ -197,13 +197,16 @@ export default function MeetingPage() {
           <meta property="og:type" content="website" />
           <meta property="og:title" content={`${meeting.created_by_name} Has Invited You!`} />
           <meta property="og:description" content={meeting.description || `Join ${meeting.created_by_name}'s meeting: ${meeting.title}`} />
-          <meta property="og:image" content={`${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/api/og-image/${meeting.id}`} />
+          <meta property="og:image" content={`${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/meeting/${meeting.id}/opengraph-image`} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:alt" content="Meeting Invitation" />
           
           {/* Twitter */}
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content={`${meeting.created_by_name} Has Invited You!`} />
           <meta name="twitter:description" content={meeting.description || `Join ${meeting.created_by_name}'s meeting: ${meeting.title}`} />
-          <meta name="twitter:image" content={`${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/api/og-image/${meeting.id}`} />
+          <meta name="twitter:image" content={`${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/meeting/${meeting.id}/opengraph-image`} />
         </Head>
       )}
 
@@ -283,7 +286,7 @@ export default function MeetingPage() {
                       disabled={isJoining}
                       className="w-full bg-white text-gray-900 py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:opacity-50"
                     >
-                      {isJoining ? 'Joining...' : 'Join Meeting'}
+                      {isJoining ? 'Joining...' : 'Join'}
                     </button>
                   ) : (
                     <div className="w-full bg-green-500/20 text-green-500 py-3 px-6 rounded-lg font-medium text-center">
