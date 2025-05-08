@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { InfiniteSlider } from "@/components/ui/infinite-slider";
+import { InfiniteSlider } from "@/app/components/ui/infinite-slider";
 
 const ShaderGradient = dynamic(() => import('./components/ShaderGradient'), { ssr: false });
 
@@ -118,7 +118,7 @@ export default function Home() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="#features"
+                href="/meeting/create"
                 className="bg-white/90 backdrop-blur-sm text-[#6d1c1c] px-6 py-3 rounded-full font-medium hover:bg-white transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#ff9c75]/10"
               >
                  Start Building Your Company's Future with Codavra
