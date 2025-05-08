@@ -18,9 +18,18 @@ function SignInContent() {
     if (status === 'loading') return;
     
     if (session) {
-      if (session.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
-        router.push('/admin/meetings');
+      // Check if user is admin and trying to access admin page
+      const isAdminRoute = callbackUrl.includes('/admin/');
+      const isAdmin = session.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+      
+      if (isAdminRoute && !isAdmin) {
+        // Redirect non-admin users to meeting/create
+        router.push('/meeting/create');
+      } else if (isAdmin && isAdminRoute) {
+        // Allow admin to access admin routes
+        router.push(callbackUrl);
       } else {
+        // For all other cases, follow the callback URL
         router.push(callbackUrl);
       }
     }

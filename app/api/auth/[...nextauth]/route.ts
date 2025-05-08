@@ -18,16 +18,24 @@ const handler = NextAuth({
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Always allow internal URLs
-      if (url.startsWith(baseUrl) || url.startsWith('/')) {
+      // Handle relative URLs
+      if (url.startsWith('/')) {
+        return `${baseUrl}${url}`;
+      }
+      // Handle absolute URLs that match the baseUrl
+      if (url.startsWith(baseUrl)) {
         return url;
       }
-      // Default to homepage
+      // Default to /meeting/create for non-admin users
+      if (!url.includes('/admin/')) {
+        return `${baseUrl}/meeting/create`;
+      }
       return baseUrl;
     }
   },
   pages: {
     signIn: '/auth/signin',
+    error: '/auth/error',
   },
   secret: process.env.NEXTAUTH_SECRET,
 });
