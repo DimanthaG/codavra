@@ -32,8 +32,8 @@ export async function generateMetadata(
     const title = `${organizerName} has invited you to ${meeting.title}`;
     const description = meeting.description || `Join ${organizerName}'s meeting`;
 
-    // Make sure we use the correct path - opengraph-image is the Next.js convention
-    const ogImageUrl = `/meeting/${params.id}/opengraph-image?t=${timestamp}`;
+    // Use the absolute URL with the baseUrl to avoid path issues
+    const ogImageUrl = `${baseUrl}/meeting/${params.id}/opengraph-image?t=${timestamp}`;
 
     return {
       title: title,
