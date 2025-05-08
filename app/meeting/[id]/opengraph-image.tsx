@@ -79,9 +79,10 @@ export default async function Image({ params }: { params: { id: string } }) {
       );
     }
 
-    // Format organizer name
+    // Format organizer name and title
     const organizerName = meeting.created_by_name || 'Someone';
     const meetingTitle = meeting.title || 'Meeting';
+    const description = meeting.description || '';
     
     // Create the complete invitation text that matches what's shown in metadata
     const inviteText = `${organizerName} has invited you to ${meetingTitle}`;
@@ -119,9 +120,16 @@ export default async function Image({ params }: { params: { id: string } }) {
             }}
           >
             {/* Full invitation text */}
-            <div style={{ fontSize: 52, fontWeight: 'bold', lineHeight: 1.2, marginBottom: 30 }}>
+            <div style={{ fontSize: 48, fontWeight: 'bold', lineHeight: 1.2, marginBottom: 20 }}>
               {inviteText}
             </div>
+            
+            {/* Description (if available) */}
+            {description && (
+              <div style={{ fontSize: 36, marginTop: 10, marginBottom: 20, color: 'rgba(255,255,255,0.9)' }}>
+                {description}
+              </div>
+            )}
             
             {/* Date and time if available */}
             {(meeting.date || meeting.time) && (
@@ -136,7 +144,7 @@ export default async function Image({ params }: { params: { id: string } }) {
             )}
           </div>
           
-          {/* Logo/Watermark */}
+          {/* Website URL at bottom */}
           <div
             style={{
               position: 'absolute',
@@ -147,7 +155,7 @@ export default async function Image({ params }: { params: { id: string } }) {
               alignItems: 'center',
             }}
           >
-            Codavra
+            www.codavra.com
           </div>
         </div>
       ),
