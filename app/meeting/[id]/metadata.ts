@@ -53,7 +53,7 @@ export async function generateMetadata(
       description,
       type: 'website',
       url: `${baseUrl}/meeting/${params.id}`,
-      siteName: 'Codavra Meeting Manager',
+      siteName: 'Codavra',
       images: [
         {
           url: ogImageUrl, 

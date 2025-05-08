@@ -32,6 +32,9 @@ export async function generateMetadata(
     const title = `${organizerName} has invited you to ${meeting.title}`;
     const description = meeting.description || `Join ${organizerName}'s meeting`;
 
+    // Make sure we use the correct path - opengraph-image is the Next.js convention
+    const ogImageUrl = `/meeting/${params.id}/opengraph-image?t=${timestamp}`;
+
     return {
       title: title,
       description: description,
@@ -40,10 +43,10 @@ export async function generateMetadata(
         description: description,
         type: 'website',
         url: `${baseUrl}/meeting/${params.id}`,
-        siteName: 'Codavra Meeting',
+        siteName: 'Codavra',
         images: [
           {
-            url: `/meeting/${params.id}/opengraph-default?t=${timestamp}`,
+            url: ogImageUrl,
             width: 1200,
             height: 630,
             alt: 'Meeting Invitation'
@@ -54,7 +57,7 @@ export async function generateMetadata(
         card: 'summary_large_image',
         title: title,
         description: description,
-        images: [`/meeting/${params.id}/opengraph-default?t=${timestamp}`],
+        images: [ogImageUrl],
       },
       alternates: {
         canonical: `${baseUrl}/meeting/${params.id}`

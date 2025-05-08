@@ -4,7 +4,7 @@ import { ImageResponse } from 'next/og';
 export const runtime = 'edge';
 
 // Image metadata
-export const alt = 'Codavra Meeting Manager';
+export const alt = 'Codavra';
 export const size = {
   width: 1200,
   height: 630,
@@ -49,11 +49,12 @@ export default async function Image() {
           }}
         >
           <div style={{ fontSize: 72, fontWeight: 'bold', marginBottom: 20 }}>
-            Codavra Meeting Manager
+            Codavra
           </div>
           
           <div style={{ fontSize: 36, opacity: 0.9, fontWeight: 'normal' }}>
-            Create and manage meetings with ease
+          We Craft Websites That Grow with You
+
           </div>
         </div>
       </div>

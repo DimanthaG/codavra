@@ -3,6 +3,8 @@ import { supabase } from '@/utils/supabase';
 
 // Route segment config
 export const runtime = 'edge';
+export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 // Image metadata
 export const alt = 'Meeting Invitation';
@@ -47,15 +49,23 @@ export default async function Image({ params }: { params: { id: string } }) {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundImage: 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',
-              backgroundColor: '#111',
-              backgroundSize: '400% 400%',
+              backgroundImage: 'url(https://www.codavra.com/image.png)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
               color: 'white',
               padding: '40px',
               textAlign: 'center',
             }}
           >
-            <div style={{ fontSize: 60, fontWeight: 'bold' }}>
+            <div 
+              style={{ 
+                fontSize: 60, 
+                fontWeight: 'bold',
+                backgroundColor: 'rgba(0,0,0,0.6)',
+                padding: '20px 40px',
+                borderRadius: '12px',
+              }}
+            >
               Meeting Invitation
             </div>
           </div>
@@ -63,7 +73,7 @@ export default async function Image({ params }: { params: { id: string } }) {
         {
           ...size,
           headers: {
-            'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+            'Cache-Control': 'no-cache, no-store',
             'Content-Type': 'image/png',
           }
         }
@@ -83,43 +93,14 @@ export default async function Image({ params }: { params: { id: string } }) {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            position: 'relative',
-            backgroundImage: 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',
-            backgroundColor: '#111',
-            backgroundSize: '400% 400%',
+            backgroundImage: 'url(https://www.codavra.com/image.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
             color: 'white',
             padding: '40px',
-            overflow: 'hidden',
+            textAlign: 'center',
           }}
         >
-          {/* Animated gradient-like overlays */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '-50%',
-              left: '-50%',
-              right: 0,
-              bottom: 0,
-              width: '200%',
-              height: '200%',
-              opacity: 0.3,
-              background: 'radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0) 50%)',
-            }}
-          />
-          
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              opacity: 0.2,
-              backgroundImage: 'linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)',
-              backgroundSize: '200% 200%',
-            }}
-          />
-          
           <div
             style={{
               display: 'flex',
@@ -127,30 +108,29 @@ export default async function Image({ params }: { params: { id: string } }) {
               alignItems: 'center',
               justifyContent: 'center',
               textAlign: 'center',
-              zIndex: 10,
               maxWidth: '90%',
-              backgroundColor: 'rgba(0,0,0,0.4)',
-              backdropFilter: 'blur(10px)',
+              backgroundColor: 'rgba(0,0,0,0.6)',
               borderRadius: '20px',
               padding: '40px',
+              boxShadow: '0 0 30px rgba(0,0,0,0.5)',
               border: '1px solid rgba(255,255,255,0.1)',
             }}
           >
-            <div style={{ fontSize: 52, fontWeight: 'bold', marginBottom: 20 }}>
-              {organizerName} has invited you to join
+            <div style={{ fontSize: 48, fontWeight: 'bold', marginBottom: 20 }}>
+              {organizerName} has invited you to
             </div>
             
-            <div style={{ fontSize: 48, marginBottom: 40, opacity: 0.9, fontWeight: 'bold' }}>
+            <div style={{ fontSize: 56, marginBottom: 30, fontWeight: 'bold' }}>
               {meeting.title}
             </div>
             
-            <div style={{ fontSize: 30, opacity: 0.7 }}>
-              {new Date(meeting.date).toLocaleDateString('en-US', {
+            <div style={{ fontSize: 28 }}>
+              {meeting.date && new Date(meeting.date).toLocaleDateString('en-US', {
                 weekday: 'long',
-                year: 'numeric',
                 month: 'long',
                 day: 'numeric',
-              })} at {meeting.time}
+              })}
+              {meeting.time && ` at ${meeting.time}`}
             </div>
           </div>
           
@@ -159,25 +139,20 @@ export default async function Image({ params }: { params: { id: string } }) {
             style={{
               position: 'absolute',
               bottom: 30,
-              left: 30,
               fontSize: 24,
-              opacity: 0.7,
+              opacity: 0.8,
               display: 'flex',
               alignItems: 'center',
             }}
           >
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="white" style={{ marginRight: 10 }}>
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-              <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
-            </svg>
-            Codavra Meeting
+            Codavra
           </div>
         </div>
       ),
       {
         ...size,
         headers: {
-          'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+          'Cache-Control': 'no-cache, no-store',
           'Content-Type': 'image/png',
         }
       }
@@ -196,14 +171,23 @@ export default async function Image({ params }: { params: { id: string } }) {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundImage: 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',
-            backgroundColor: '#111',
+            backgroundImage: 'url(https://www.codavra.com/image.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
             color: 'white',
             padding: '40px',
             textAlign: 'center',
           }}
         >
-          <div style={{ fontSize: 60, fontWeight: 'bold' }}>
+          <div 
+            style={{ 
+              fontSize: 60, 
+              fontWeight: 'bold',
+              backgroundColor: 'rgba(0,0,0,0.6)',
+              padding: '20px 40px',
+              borderRadius: '12px',
+            }}
+          >
             Meeting Invitation
           </div>
         </div>
@@ -211,7 +195,7 @@ export default async function Image({ params }: { params: { id: string } }) {
       {
         ...size,
         headers: {
-          'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+          'Cache-Control': 'no-cache, no-store',
           'Content-Type': 'image/png',
         }
       }
