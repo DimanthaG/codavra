@@ -21,21 +21,30 @@ function SignInContent() {
     if (status === 'loading') return;
     
     if (session) {
-      // Check if user is admin and trying to access admin page
-      const isAdminRoute = callbackUrl.includes('/admin/');
-      const isAdmin = session.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-      
-      console.log('Auth state:', { isAdminRoute, isAdmin, userEmail: session.user?.email, adminEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL });
-      
-      if (isAdminRoute && !isAdmin) {
-        console.log('Non-admin trying to access admin route, redirecting to /meeting/create');
-        router.push('/meeting/create');
-      } else if (isAdmin && isAdminRoute) {
-        console.log('Admin accessing admin route, following callback URL:', callbackUrl);
-        router.push(callbackUrl);
-      } else {
-        console.log('Normal user, following callback URL:', callbackUrl);
-        router.push(callbackUrl);
+      try {
+        // Check if user is admin and trying to access admin page
+        const isAdminRoute = callbackUrl.includes('/admin/');
+        const isAdmin = session.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+        
+        console.log('Auth state:', { isAdminRoute, isAdmin, userEmail: session.user?.email, adminEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL });
+        
+        let redirectUrl = callbackUrl;
+        
+        if (isAdminRoute && !isAdmin) {
+          console.log('Non-admin trying to access admin route, redirecting to /meeting/create');
+          redirectUrl = '/meeting/create';
+        } else if (isAdmin && isAdminRoute) {
+          console.log('Admin accessing admin route, following callback URL:', callbackUrl);
+        } else {
+          console.log('Normal user, following callback URL:', callbackUrl);
+        }
+
+        // Use window.location for hard redirect
+        window.location.href = redirectUrl;
+      } catch (error) {
+        console.error('Error during redirect:', error);
+        // Fallback to router.replace if window.location fails
+        router.replace('/meeting/create');
       }
     }
   }, [session, status, router, callbackUrl]);
