@@ -9,18 +9,30 @@ import dynamic from 'next/dynamic';
 const GradientBackground = dynamic(() => import('@/components/GradientBackground'), { ssr: false });
 
 function SignInContent() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/';
+  const callbackUrl = searchParams.get('callbackUrl') || '/meeting/create';
 
   useEffect(() => {
-    if (session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
-      router.push('/admin/meetings');
-    } else if (session) {
-      router.push(callbackUrl);
+    if (status === 'loading') return;
+    
+    if (session) {
+      if (session.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
+        router.push('/admin/meetings');
+      } else {
+        router.push(callbackUrl);
+      }
     }
-  }, [session, router, callbackUrl]);
+  }, [session, status, router, callbackUrl]);
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center relative p-4">

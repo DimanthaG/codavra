@@ -18,16 +18,18 @@ const handler = NextAuth({
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Allow relative URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      // Allow redirects to the same origin
-      else if (new URL(url).origin === baseUrl) return url;
+      // Always allow internal URLs
+      if (url.startsWith(baseUrl) || url.startsWith('/')) {
+        return url;
+      }
+      // Default to homepage
       return baseUrl;
     }
   },
   pages: {
     signIn: '/auth/signin',
   },
+  secret: process.env.NEXTAUTH_SECRET,
 });
 
 export { handler as GET, handler as POST }; 
