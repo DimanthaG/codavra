@@ -10,7 +10,20 @@ export const size = {
   width: 1200,
   height: 630,
 };
+
+// Set ContentType to PNG for better compatibility
 export const contentType = 'image/png';
+
+// Set cache control headers for better caching behavior
+export async function generateImageMetadata() {
+  return [
+    {
+      contentType: 'image/png',
+      size: { width: 1200, height: 630 },
+      id: 'opengraph-image'
+    }
+  ];
+}
 
 // Image generation
 export default async function Image({ params }: { params: { id: string } }) {
@@ -47,7 +60,13 @@ export default async function Image({ params }: { params: { id: string } }) {
             </div>
           </div>
         ),
-        size
+        {
+          ...size,
+          headers: {
+            'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+            'Content-Type': 'image/png',
+          }
+        }
       );
     }
 
@@ -117,11 +136,11 @@ export default async function Image({ params }: { params: { id: string } }) {
               border: '1px solid rgba(255,255,255,0.1)',
             }}
           >
-            <div style={{ fontSize: 60, fontWeight: 'bold', marginBottom: 20 }}>
-              {organizerName} Has Invited You!
+            <div style={{ fontSize: 52, fontWeight: 'bold', marginBottom: 20 }}>
+              {organizerName} has invited you to join
             </div>
             
-            <div style={{ fontSize: 40, marginBottom: 40, opacity: 0.9 }}>
+            <div style={{ fontSize: 48, marginBottom: 40, opacity: 0.9, fontWeight: 'bold' }}>
               {meeting.title}
             </div>
             
@@ -155,7 +174,13 @@ export default async function Image({ params }: { params: { id: string } }) {
           </div>
         </div>
       ),
-      size
+      {
+        ...size,
+        headers: {
+          'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+          'Content-Type': 'image/png',
+        }
+      }
     );
   } catch (error) {
     console.error('Error generating OG image:', error);
@@ -183,7 +208,13 @@ export default async function Image({ params }: { params: { id: string } }) {
           </div>
         </div>
       ),
-      size
+      {
+        ...size,
+        headers: {
+          'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+          'Content-Type': 'image/png',
+        }
+      }
     );
   }
 } 

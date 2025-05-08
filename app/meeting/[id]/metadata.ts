@@ -1,9 +1,9 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import { supabase } from '@/utils/supabase';
 
-type Props = {
+interface Props {
   params: { id: string };
-};
+}
 
 export async function generateMetadata(
   { params }: Props,
@@ -24,27 +24,56 @@ export async function generateMetadata(
   }
 
   // Get base URL
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 
-    (typeof window !== 'undefined' ? window.location.origin : '');
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.codavra.com';
     
   const organizerName = meeting.created_by_name || 'Someone';
-  const title = `${organizerName} Has Invited You!`;
-  const description = meeting.description || `Join ${organizerName}'s meeting: ${meeting.title}`;
+  const title = `${organizerName} has invited you to join ${meeting.title}`;
+  
+  // Format the date for a nice description
+  const meetingDate = new Date(meeting.date || '').toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  
+  const description = meeting.description || 
+    `Join ${organizerName}'s meeting on ${meetingDate} at ${meeting.time}`;
+
+  // Add a timestamp to break caching
+  const timestamp = Date.now();
+  const ogImageUrl = `${baseUrl}/meeting/${params.id}/opengraph-image?t=${timestamp}`;
 
   return {
     title: `${meeting.title} - Meeting Invitation`,
     description,
+    metadataBase: new URL(baseUrl),
     openGraph: {
       title,
       description,
       type: 'website',
-      // The OG image will be automatically picked up from the opengraph-image.tsx file
+      url: `${baseUrl}/meeting/${params.id}`,
+      siteName: 'Codavra Meeting Manager',
+      images: [
+        {
+          url: ogImageUrl, 
+          width: 1200,
+          height: 630,
+          alt: 'Meeting Invitation'
+        }
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      // The Twitter image will be automatically picked up from the opengraph-image.tsx file
+      images: [ogImageUrl],
+    },
+    other: {
+      'og:image:secure_url': ogImageUrl,
+    },
+    alternates: {
+      canonical: `${baseUrl}/meeting/${params.id}`,
     },
   };
 } 

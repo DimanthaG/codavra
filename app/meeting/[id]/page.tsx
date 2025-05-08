@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { useSession, signIn } from 'next-auth/react';
-import Head from 'next/head';
 import { supabase } from '@/utils/supabase';
 import { motion } from 'framer-motion';
 
@@ -187,139 +186,115 @@ export default function MeetingPage() {
     meeting?.participants?.some(p => p.email === session.user.email);
 
   return (
-    <>
-      {meeting && (
-        <Head>
-          <title>{meeting.title} - Meeting Invitation</title>
-          <meta name="description" content={meeting.description} />
-          
-          {/* OpenGraph / Facebook */}
-          <meta property="og:type" content="website" />
-          <meta property="og:title" content={`${meeting.created_by_name} Has Invited You!`} />
-          <meta property="og:description" content={meeting.description || `Join ${meeting.created_by_name}'s meeting: ${meeting.title}`} />
-          <meta property="og:image" content={`${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/meeting/${meeting.id}/opengraph-image`} />
-          <meta property="og:image:width" content="1200" />
-          <meta property="og:image:height" content="630" />
-          <meta property="og:image:alt" content="Meeting Invitation" />
-          
-          {/* Twitter */}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={`${meeting.created_by_name} Has Invited You!`} />
-          <meta name="twitter:description" content={meeting.description || `Join ${meeting.created_by_name}'s meeting: ${meeting.title}`} />
-          <meta name="twitter:image" content={`${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/meeting/${meeting.id}/opengraph-image`} />
-        </Head>
-      )}
+    <div className="min-h-screen flex items-center justify-center relative p-4">
+      {meeting ? (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-2xl border border-white/20 w-full max-w-2xl"
+        >
+          <div className="flex justify-between items-start mb-8">
+            <h1 className="text-4xl font-bold text-white">{meeting.title}</h1>
+            <button
+              onClick={handleShare}
+              className="px-4 py-2 bg-purple-500/20 text-purple-200 rounded-lg hover:bg-purple-500/30 transition-colors flex items-center gap-2"
+            >
+              {copied ? (
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 6L9 17l-5-5"/>
+                  </svg>
+                  Copied!
+                </>
+              ) : (
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  Share Invite
+                </>
+              )}
+            </button>
+          </div>
 
-      <div className="min-h-screen flex items-center justify-center relative p-4">
-        {meeting ? (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-2xl border border-white/20 w-full max-w-2xl"
-          >
-            <div className="flex justify-between items-start mb-8">
-              <h1 className="text-4xl font-bold text-white">{meeting.title}</h1>
-              <button
-                onClick={handleShare}
-                className="px-4 py-2 bg-purple-500/20 text-purple-200 rounded-lg hover:bg-purple-500/30 transition-colors flex items-center gap-2"
-              >
-                {copied ? (
-                  <>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20 6L9 17l-5-5"/>
-                    </svg>
-                    Copied!
-                  </>
+          <div className="space-y-6 text-white">
+            <div>
+              <h2 className="text-xl font-semibold mb-2">When</h2>
+              <p className="text-white/80">
+                {formattedDate} at {meeting.time}
+              </p>
+            </div>
+
+            <div>
+              <h2 className="text-xl font-semibold mb-2">Description</h2>
+              <p className="text-white/80 whitespace-pre-wrap">{meeting.description}</p>
+            </div>
+
+            <div>
+              <h2 className="text-xl font-semibold mb-2">Organizer</h2>
+              <div className="flex items-center gap-3 bg-white/5 p-3 rounded-lg">
+                <img
+                  src={meeting.created_by_image}
+                  alt={meeting.created_by_name}
+                  className="w-10 h-10 rounded-full"
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+                  }}
+                />
+                <span className="text-white/90">{meeting.created_by_name}</span>
+              </div>
+            </div>
+
+            {meeting.allow_join && (
+              <div className="pt-6">
+                {!session ? (
+                  <button
+                    onClick={handleSignIn}
+                    className="block w-full bg-white text-gray-900 py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors text-center"
+                  >
+                    Sign in to Join
+                  </button>
+                ) : !isParticipant ? (
+                  <button
+                    onClick={handleJoin}
+                    disabled={isJoining}
+                    className="w-full bg-white text-gray-900 py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:opacity-50"
+                  >
+                    {isJoining ? 'Joining...' : 'Join'}
+                  </button>
                 ) : (
-                  <>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                    </svg>
-                    Share Invite
-                  </>
-                )}
-              </button>
-            </div>
-
-            <div className="space-y-6 text-white">
-              <div>
-                <h2 className="text-xl font-semibold mb-2">When</h2>
-                <p className="text-white/80">
-                  {formattedDate} at {meeting.time}
-                </p>
-              </div>
-
-              <div>
-                <h2 className="text-xl font-semibold mb-2">Description</h2>
-                <p className="text-white/80 whitespace-pre-wrap">{meeting.description}</p>
-              </div>
-
-              <div>
-                <h2 className="text-xl font-semibold mb-2">Organizer</h2>
-                <div className="flex items-center gap-3 bg-white/5 p-3 rounded-lg">
-                  <img
-                    src={meeting.created_by_image}
-                    alt={meeting.created_by_name}
-                    className="w-10 h-10 rounded-full"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
-                    }}
-                  />
-                  <span className="text-white/90">{meeting.created_by_name}</span>
-                </div>
-              </div>
-
-              {meeting.allow_join && (
-                <div className="pt-6">
-                  {!session ? (
-                    <button
-                      onClick={handleSignIn}
-                      className="block w-full bg-white text-gray-900 py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors text-center"
-                    >
-                      Sign in to Join
-                    </button>
-                  ) : !isParticipant ? (
-                    <button
-                      onClick={handleJoin}
-                      disabled={isJoining}
-                      className="w-full bg-white text-gray-900 py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:opacity-50"
-                    >
-                      {isJoining ? 'Joining...' : 'Join'}
-                    </button>
-                  ) : (
-                    <div className="w-full bg-green-500/20 text-green-500 py-3 px-6 rounded-lg font-medium text-center">
-                      You've Joined
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {meeting.participants?.length > 0 && (
-                <div className="pt-6">
-                  <h2 className="text-xl font-semibold mb-4">Participants</h2>
-                  <div className="grid gap-3">
-                    {meeting.participants.map((participant, index) => (
-                      <div key={index} className="flex items-center gap-3 bg-white/5 p-3 rounded-lg">
-                        <img
-                          src={participant.image}
-                          alt={participant.name}
-                          className="w-10 h-10 rounded-full"
-                          onError={(e) => {
-                            e.currentTarget.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
-                          }}
-                        />
-                        <span className="text-white/90">{participant.name}</span>
-                      </div>
-                    ))}
+                  <div className="w-full bg-green-500/20 text-green-500 py-3 px-6 rounded-lg font-medium text-center">
+                    You've Joined
                   </div>
+                )}
+              </div>
+            )}
+
+            {meeting.participants?.length > 0 && (
+              <div className="pt-6">
+                <h2 className="text-xl font-semibold mb-4">Participants</h2>
+                <div className="grid gap-3">
+                  {meeting.participants.map((participant, index) => (
+                    <div key={index} className="flex items-center gap-3 bg-white/5 p-3 rounded-lg">
+                      <img
+                        src={participant.image}
+                        alt={participant.name}
+                        className="w-10 h-10 rounded-full"
+                        onError={(e) => {
+                          e.currentTarget.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+                        }}
+                      />
+                      <span className="text-white/90">{participant.name}</span>
+                    </div>
+                  ))}
                 </div>
-              )}
-            </div>
-          </motion.div>
-        ) : null}
-      </div>
-    </>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      ) : null}
+    </div>
   );
 } 
