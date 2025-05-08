@@ -2,6 +2,8 @@ import { ImageResponse } from 'next/og';
 
 // Route segment config
 export const runtime = 'edge';
+export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
 // Image metadata
 export const alt = 'Codavra';
@@ -24,9 +26,9 @@ export default async function Image() {
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
-          backgroundImage: 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',
-          backgroundColor: '#111',
-          backgroundSize: '400% 400%',
+          backgroundImage: 'url(https://www.codavra.com/image.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           color: 'white',
           padding: '40px',
           overflow: 'hidden',
@@ -41,11 +43,12 @@ export default async function Image() {
             textAlign: 'center',
             zIndex: 10,
             maxWidth: '90%',
-            backgroundColor: 'rgba(0,0,0,0.4)',
+            backgroundColor: 'rgba(0,0,0,0.6)',
             backdropFilter: 'blur(10px)',
             borderRadius: '20px',
             padding: '40px',
             border: '1px solid rgba(255,255,255,0.1)',
+            boxShadow: '0 0 30px rgba(0,0,0,0.5)',
           }}
         >
           <div style={{ fontSize: 72, fontWeight: 'bold', marginBottom: 20 }}>
@@ -53,8 +56,7 @@ export default async function Image() {
           </div>
           
           <div style={{ fontSize: 36, opacity: 0.9, fontWeight: 'normal' }}>
-          We Craft Websites That Grow with You
-
+            We Craft Websites That Grow with You
           </div>
         </div>
       </div>
@@ -62,7 +64,7 @@ export default async function Image() {
     {
       ...size,
       headers: {
-        'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+        'Cache-Control': 'no-cache, no-store',
         'Content-Type': 'image/png',
       }
     }

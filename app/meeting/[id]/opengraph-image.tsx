@@ -49,9 +49,8 @@ export default async function Image({ params }: { params: { id: string } }) {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundImage: 'url(https://www.codavra.com/image.png)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundColor: '#392100',
+              backgroundImage: 'linear-gradient(135deg, #392100 0%, #644000 20%, #98610D 40%, #CE8D16 60%, #FFB340 80%, #FFEFD9 100%)',
               color: 'white',
               padding: '40px',
               textAlign: 'center',
@@ -82,6 +81,10 @@ export default async function Image({ params }: { params: { id: string } }) {
 
     // Format organizer name
     const organizerName = meeting.created_by_name || 'Someone';
+    const meetingTitle = meeting.title || 'Meeting';
+    
+    // Create the complete invitation text that matches what's shown in metadata
+    const inviteText = `${organizerName} has invited you to ${meetingTitle}`;
     
     return new ImageResponse(
       (
@@ -93,9 +96,8 @@ export default async function Image({ params }: { params: { id: string } }) {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundImage: 'url(https://www.codavra.com/image.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundColor: '#392100',
+            backgroundImage: 'linear-gradient(135deg, #392100 0%, #644000 20%, #98610D 40%, #CE8D16 60%, #FFB340 80%, #FFEFD9 100%)',
             color: 'white',
             padding: '40px',
             textAlign: 'center',
@@ -108,30 +110,30 @@ export default async function Image({ params }: { params: { id: string } }) {
               alignItems: 'center',
               justifyContent: 'center',
               textAlign: 'center',
-              maxWidth: '90%',
-              backgroundColor: 'rgba(0,0,0,0.6)',
+              width: '90%',
+              backgroundColor: 'rgba(0,0,0,0.7)',
               borderRadius: '20px',
               padding: '40px',
               boxShadow: '0 0 30px rgba(0,0,0,0.5)',
               border: '1px solid rgba(255,255,255,0.1)',
             }}
           >
-            <div style={{ fontSize: 48, fontWeight: 'bold', marginBottom: 20 }}>
-              {organizerName} has invited you to
+            {/* Full invitation text */}
+            <div style={{ fontSize: 52, fontWeight: 'bold', lineHeight: 1.2, marginBottom: 30 }}>
+              {inviteText}
             </div>
             
-            <div style={{ fontSize: 56, marginBottom: 30, fontWeight: 'bold' }}>
-              {meeting.title}
-            </div>
-            
-            <div style={{ fontSize: 28 }}>
-              {meeting.date && new Date(meeting.date).toLocaleDateString('en-US', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric',
-              })}
-              {meeting.time && ` at ${meeting.time}`}
-            </div>
+            {/* Date and time if available */}
+            {(meeting.date || meeting.time) && (
+              <div style={{ fontSize: 28, marginTop: 10 }}>
+                {meeting.date && new Date(meeting.date).toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+                {meeting.time && ` at ${meeting.time}`}
+              </div>
+            )}
           </div>
           
           {/* Logo/Watermark */}
@@ -171,9 +173,8 @@ export default async function Image({ params }: { params: { id: string } }) {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundImage: 'url(https://www.codavra.com/image.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundColor: '#392100',
+            backgroundImage: 'linear-gradient(135deg, #392100 0%, #644000 20%, #98610D 40%, #CE8D16 60%, #FFB340 80%, #FFEFD9 100%)',
             color: 'white',
             padding: '40px',
             textAlign: 'center',
