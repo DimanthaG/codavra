@@ -15,6 +15,9 @@ function SignInContent() {
   const callbackUrl = searchParams.get('callbackUrl') || '/meeting/create';
 
   useEffect(() => {
+    // Debug logging
+    console.log('Session state:', { session, status, callbackUrl });
+    
     if (status === 'loading') return;
     
     if (session) {
@@ -22,18 +25,28 @@ function SignInContent() {
       const isAdminRoute = callbackUrl.includes('/admin/');
       const isAdmin = session.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
       
+      console.log('Auth state:', { isAdminRoute, isAdmin, userEmail: session.user?.email, adminEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL });
+      
       if (isAdminRoute && !isAdmin) {
-        // Redirect non-admin users to meeting/create
+        console.log('Non-admin trying to access admin route, redirecting to /meeting/create');
         router.push('/meeting/create');
       } else if (isAdmin && isAdminRoute) {
-        // Allow admin to access admin routes
+        console.log('Admin accessing admin route, following callback URL:', callbackUrl);
         router.push(callbackUrl);
       } else {
-        // For all other cases, follow the callback URL
+        console.log('Normal user, following callback URL:', callbackUrl);
         router.push(callbackUrl);
       }
     }
   }, [session, status, router, callbackUrl]);
+
+  const handleSignIn = () => {
+    console.log('Starting sign in with callback URL:', callbackUrl);
+    signIn('google', { 
+      callbackUrl,
+      redirect: true,
+    });
+  };
 
   if (status === 'loading') {
     return (
@@ -52,7 +65,7 @@ function SignInContent() {
         <h1 className="text-3xl font-bold text-white mb-8 text-center">Sign In</h1>
         <div className="space-y-4">
           <button
-            onClick={() => signIn('google', { callbackUrl })}
+            onClick={handleSignIn}
             className="w-full bg-white text-gray-900 py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors flex items-center justify-center gap-3"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
