@@ -32,6 +32,9 @@ export async function generateMetadata(
     const title = `${organizerName} has invited you to ${meeting.title}`;
     const description = meeting.description || `Join ${organizerName}'s meeting`;
 
+    // This path must include /opengraph-image exactly once
+    const ogImageUrl = `${baseUrl}/meeting/${params.id}/opengraph-image?t=${timestamp}`;
+
     return {
       title: title,
       description: description,
@@ -43,7 +46,7 @@ export async function generateMetadata(
         siteName: 'Codavra',
         images: [
           {
-            url: `${baseUrl}/meeting/${params.id}?t=${timestamp}`,
+            url: ogImageUrl,
             width: 1200,
             height: 630,
             alt: 'Meeting Invitation'
@@ -54,7 +57,7 @@ export async function generateMetadata(
         card: 'summary_large_image',
         title: title,
         description: description,
-        images: [`${baseUrl}/meeting/${params.id}?t=${timestamp}`],
+        images: [ogImageUrl],
       },
       alternates: {
         canonical: `${baseUrl}/meeting/${params.id}`
