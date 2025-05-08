@@ -32,8 +32,8 @@ export async function generateMetadata(
     const title = `${organizerName} has invited you to ${meeting.title}`;
     const description = meeting.description || `Join ${organizerName}'s meeting`;
 
-    // This path must include /opengraph-image exactly once
-    const ogImageUrl = `${baseUrl}/meeting/${params.id}/opengraph-image?t=${timestamp}`;
+    // Updated URL to avoid duplication - Next.js will automatically append /opengraph-image to this path
+    const ogImageUrl = `${baseUrl}/meeting/${params.id}?t=${timestamp}`;
 
     return {
       title: title,
