@@ -32,14 +32,11 @@ export async function generateMetadata(
     const title = `${organizerName} has invited you to ${meeting.title}`;
     const description = meeting.description || `Join ${organizerName}'s meeting`;
 
-    // Use an absolute URL to a static image that's guaranteed to exist
-    const staticImageUrl = `${baseUrl}/images/og-meeting.png`;
-    
     // Pass meeting details as query parameters to the dynamic image
     const encodedTitle = encodeURIComponent(meeting.title);
     const encodedOrganizer = encodeURIComponent(organizerName);
     const encodedDescription = encodeURIComponent(description);
-    const dynamicImageUrl = `${baseUrl}/api/og/${params.id}?title=${encodedTitle}&organizer=${encodedOrganizer}&description=${encodedDescription}`;
+    const ogImageUrl = `${baseUrl}/api/og/${params.id}?title=${encodedTitle}&organizer=${encodedOrganizer}&description=${encodedDescription}&t=${timestamp}`;
 
     return {
       title: title,
@@ -52,14 +49,8 @@ export async function generateMetadata(
         siteName: 'Codavra',
         images: [
           {
-            url: staticImageUrl,
+            url: ogImageUrl,
             width: 1200,
-            height: 630,
-            alt: 'Meeting Invitation'
-          },
-          {
-            url: dynamicImageUrl,
-            width: 1200, 
             height: 630,
             alt: 'Meeting Invitation'
           }
@@ -69,7 +60,7 @@ export async function generateMetadata(
         card: 'summary_large_image',
         title: title,
         description: description,
-        images: [staticImageUrl, dynamicImageUrl],
+        images: [ogImageUrl],
       },
       alternates: {
         canonical: `${baseUrl}/meeting/${params.id}`
