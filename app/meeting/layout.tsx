@@ -1,37 +1,44 @@
-'use client';
+import { Metadata } from 'next';
+import GradientBackgroundClient from '@/components/GradientBackgroundClient';
 
-import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
-
-const GradientBackground = dynamic(() => import('@/components/GradientBackground'), {
-  ssr: false,
-  loading: () => (
-    <div className="fixed inset-0 bg-gradient-to-br from-amber-800 via-amber-600 to-red-500" />
-  )
-});
+export const metadata: Metadata = {
+  title: 'Meetings | Codavra',
+  description: 'Browse and join meetings on Codavra.',
+  openGraph: {
+    title: 'Meetings | Codavra',
+    description: 'Browse and join meetings on Codavra.',
+    type: 'website',
+    url: 'https://www.codavra.com/meeting',
+    siteName: 'Codavra',
+    images: [
+      {
+        url: 'https://grjqztijskvmeqrrqfwt.supabase.co/functions/v1/og-image?title=Codavra%20Meetings&organizer=Codavra&description=Browse%20and%20join%20meetings%20on%20Codavra',
+        width: 1200,
+        height: 630,
+        alt: 'Codavra Meetings'
+      }
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Meetings | Codavra',
+    description: 'Browse and join meetings on Codavra.',
+    images: [
+      'https://grjqztijskvmeqrrqfwt.supabase.co/functions/v1/og-image?title=Codavra%20Meetings&organizer=Codavra&description=Browse%20and%20join%20meetings%20on%20Codavra'
+    ],
+  }
+};
 
 export default function MeetingLayout({ children }: { children: React.ReactNode }) {
-  // Add a fade-in effect for the children content
-  const [isMounted, setIsMounted] = useState(false);
-  
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   return (
     <div className="min-h-screen">
       {/* Persistent gradient background that doesn't reload between navigations */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
-        <GradientBackground />
+        <GradientBackgroundClient />
       </div>
       
-      {/* Wrap children in a transition container */}
-      <div 
-        className="transition-opacity duration-300"
-        style={{ 
-          opacity: isMounted ? 1 : 0
-        }}
-      >
+      {/* Content with a nice fade-in effect */}
+      <div className="transition-opacity duration-300">
         {children}
       </div>
     </div>

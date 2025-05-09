@@ -32,11 +32,14 @@ export async function generateMetadata(
     const title = `${organizerName} has invited you to ${meeting.title}`;
     const description = meeting.description || `Join ${organizerName}'s meeting`;
 
-    // Pass meeting details as query parameters to the dynamic image
+    // Pass meeting details as query parameters to the Supabase Edge Function
     const encodedTitle = encodeURIComponent(meeting.title);
     const encodedOrganizer = encodeURIComponent(organizerName);
     const encodedDescription = encodeURIComponent(description);
-    const ogImageUrl = `${baseUrl}/api/og/${params.id}?title=${encodedTitle}&organizer=${encodedOrganizer}&description=${encodedDescription}&t=${timestamp}`;
+    
+    // Use Supabase Edge Function for OG image generation
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const ogImageUrl = `${supabaseUrl}/functions/v1/og-image?title=${encodedTitle}&organizer=${encodedOrganizer}&description=${encodedDescription}&id=${params.id}&t=${timestamp}`;
 
     return {
       title: title,
