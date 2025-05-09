@@ -109,9 +109,9 @@ serve(async (req) => {
   const meetingId = url.searchParams.get('id') || '';
 
   try {
-    // Create a canvas with the dimensions of the OG image
+    // Create a canvas with dimensions that match a 1.91:1 ratio that WhatsApp prefers
     const width = 1200;
-    const height = 630;
+    const height = 628; // Changed from 630 to 628 for WhatsApp-friendly 1.91:1 ratio
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext("2d");
     
@@ -192,11 +192,13 @@ serve(async (req) => {
     // Convert canvas to PNG
     const pngData = canvas.toBuffer("image/png");
     
-    // Return the PNG as the response
+    // Return the PNG as the response with caching disabled to prevent WhatsApp from using cached versions
     return new Response(pngData, {
       headers: {
         "Content-Type": "image/png",
-        "Cache-Control": "public, max-age=60",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0"
       },
     });
   } catch (error) {

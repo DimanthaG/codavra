@@ -38,8 +38,10 @@ export async function generateMetadata(
     const encodedDescription = encodeURIComponent(description);
     
     // Use Supabase Edge Function for OG image generation
+    // Add timestamp and a random value to prevent caching
+    const random = Math.floor(Math.random() * 1000);
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const ogImageUrl = `${supabaseUrl}/functions/v1/og-image?title=${encodedTitle}&organizer=${encodedOrganizer}&description=${encodedDescription}&id=${params.id}&t=${timestamp}`;
+    const ogImageUrl = `${supabaseUrl}/functions/v1/og-image?title=${encodedTitle}&organizer=${encodedOrganizer}&description=${encodedDescription}&id=${params.id}&t=${timestamp}&r=${random}`;
     
     // The complete URL for this meeting
     const meetingUrl = `${baseUrl}/meeting/${params.id}`;
@@ -56,8 +58,9 @@ export async function generateMetadata(
         images: [
           {
             url: ogImageUrl,
+            // Use 1.91:1 ratio which WhatsApp often prefers
             width: 1200,
-            height: 630,
+            height: 628,
             alt: 'Meeting Invitation',
             type: 'image/png',
           }
@@ -77,16 +80,21 @@ export async function generateMetadata(
       other: {
         // WhatsApp specific meta tags
         'og:image:width': '1200',
-        'og:image:height': '630',
+        'og:image:height': '628',
         'og:image:alt': 'Meeting Invitation',
+        'og:image': ogImageUrl,
         'theme-color': '#f97316', // Orange color for branded theme
         // Force large image preview format
         'twitter:card': 'summary_large_image',
+        'twitter:image': ogImageUrl,
         'format-detection': 'telephone=no',
+        // Facebook/WhatsApp recommended tags
+        'og:image:secure_url': ogImageUrl,
+        'og:updated_time': new Date().toISOString(),
       }
     };
   } catch (error) {
-    console.error('Error generating meeting metadata:', error);
+    console.error('Error generating metadata:', error);
     return {
       title: 'Meeting Invitation',
       description: 'Join this meeting',
@@ -95,5 +103,9 @@ export async function generateMetadata(
 }
 
 export default function MeetingLayout({ children }: Props) {
-  return children;
+  return (
+    <>
+      {children}
+    </>
+  );
 } 
