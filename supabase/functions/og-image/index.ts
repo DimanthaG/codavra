@@ -150,6 +150,23 @@ serve(async (req) => {
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
     ctx.lineWidth = 1;
     ctx.stroke();
+
+    // Add a gradient overlay for visual appeal
+    const overlayGradient = ctx.createLinearGradient(0, 0, width, height);
+    overlayGradient.addColorStop(0, 'rgba(255, 165, 0, 0.2)');
+    overlayGradient.addColorStop(1, 'rgba(255, 69, 0, 0.2)');
+    ctx.fillStyle = overlayGradient;
+    drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, 20);
+    ctx.fill();
+    
+    // Add WhatsApp-friendly indicator in top right
+    ctx.fillStyle = '#25D366'; // WhatsApp green
+    drawRoundedRect(ctx, width - 170, 30, 140, 40, 20);
+    ctx.fill();
+    
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 18px sans-serif';
+    drawCenteredText(ctx, 'Meeting Invite', width - 100, 55);
     
     // Decoded text
     const formattedTitle = decodeURIComponent(title);
@@ -188,6 +205,22 @@ serve(async (req) => {
     ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
     ctx.font = '16px sans-serif';
     drawCenteredText(ctx, 'www.codavra.com', centerX, ctaY + 30);
+    
+    // Add WhatsApp logo indicator at bottom right
+    try {
+      // Draw small WhatsApp icon if available or fall back to circle
+      ctx.fillStyle = '#25D366'; // WhatsApp green
+      ctx.beginPath();
+      ctx.arc(width - 50, height - 50, 15, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Add phone icon in white
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 14px sans-serif';
+      drawCenteredText(ctx, '✓', width - 50, height - 45);
+    } catch (iconError) {
+      console.error("Error adding WhatsApp indicators:", iconError);
+    }
     
     // Convert canvas to PNG
     const pngData = canvas.toBuffer("image/png");

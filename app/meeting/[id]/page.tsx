@@ -5,6 +5,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { useSession, signIn } from 'next-auth/react';
 import { supabase } from '@/utils/supabase';
 import { motion } from 'framer-motion';
+import WhatsAppShareButton from '@/components/WhatsAppShareButton';
 
 interface Participant {
   name: string;
@@ -164,17 +165,6 @@ export default function MeetingPage() {
     signIn('google', { callbackUrl });
   };
 
-  const handleShare = async () => {
-    const url = window.location.href;
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
-
   const formattedDate = new Date(meeting?.date || '').toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
@@ -196,27 +186,11 @@ export default function MeetingPage() {
         >
           <div className="flex justify-between items-start mb-8">
             <h1 className="text-4xl font-bold text-white">{meeting.title}</h1>
-            <button
-              onClick={handleShare}
-              className="px-4 py-2 bg-purple-500/20 text-purple-200 rounded-lg hover:bg-purple-500/30 transition-colors flex items-center gap-2"
-            >
-              {copied ? (
-                <>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 6L9 17l-5-5"/>
-                  </svg>
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-                  </svg>
-                  Share Invite
-                </>
-              )}
-            </button>
+            <WhatsAppShareButton 
+              meetingId={meeting.id} 
+              title={meeting.title} 
+              description={meeting.description} 
+            />
           </div>
 
           <div className="space-y-6 text-white">
