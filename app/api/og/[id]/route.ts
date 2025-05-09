@@ -1,12 +1,12 @@
 import { ImageResponse } from 'next/og';
+import { NextRequest } from 'next/server';
 
-// Route segment config
 export const runtime = 'edge';
-export const size = { width: 1200, height: 630 };
-export const contentType = 'image/png';
 
-// Image generation
-export default function Image({ params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  const id = params.id;
+  
+  // Generate a simple OpenGraph image with a nice gradient
   return new ImageResponse(
     (
       <div
@@ -54,10 +54,11 @@ export default function Image({ params }: { params: { id: string } }) {
       </div>
     ),
     {
-      ...size,
+      width: 1200,
+      height: 630,
       headers: {
-        'Cache-Control': 'no-cache, no-store',
         'Content-Type': 'image/png',
+        'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
       }
     }
   );
