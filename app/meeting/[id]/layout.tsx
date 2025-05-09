@@ -35,8 +35,11 @@ export async function generateMetadata(
     // Use an absolute URL to a static image that's guaranteed to exist
     const staticImageUrl = `${baseUrl}/images/og-meeting.png`;
     
-    // Also use dynamic image as a secondary option
-    const dynamicImageUrl = `${baseUrl}/api/og/${params.id}`;
+    // Pass meeting details as query parameters to the dynamic image
+    const encodedTitle = encodeURIComponent(meeting.title);
+    const encodedOrganizer = encodeURIComponent(organizerName);
+    const encodedDescription = encodeURIComponent(description);
+    const dynamicImageUrl = `${baseUrl}/api/og/${params.id}?title=${encodedTitle}&organizer=${encodedOrganizer}&description=${encodedDescription}`;
 
     return {
       title: title,

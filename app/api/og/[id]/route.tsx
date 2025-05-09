@@ -6,8 +6,14 @@ export const runtime = 'edge';
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   const id = params.id;
+  const searchParams = request.nextUrl.searchParams;
   
-  // Generate a simple OpenGraph image with a nice gradient
+  // Get meeting data from query parameters
+  const title = searchParams.get('title') || 'Meeting Invitation';
+  const organizer = searchParams.get('organizer') || 'Someone';
+  const description = searchParams.get('description') || 'Join this meeting';
+  
+  // Generate OpenGraph image with meeting details
   return new ImageResponse(
     (
       <div
@@ -18,8 +24,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#392100',
-          backgroundImage: 'linear-gradient(135deg, #392100 0%, #644000 20%, #98610D 40%, #CE8D16 60%, #FFB340 80%, #FFEFD9 100%)',
+          backgroundColor: '#b45309',
+          backgroundImage: 'linear-gradient(135deg, #854d0e 0%, #a16207 25%, #ca8a04 50%, #eab308 75%, #facc15 100%)',
           color: 'white',
           padding: '40px',
           textAlign: 'center',
@@ -40,16 +46,16 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
             border: '1px solid rgba(255,255,255,0.1)',
           }}
         >
-          <div style={{ fontSize: 54, fontWeight: 'bold', lineHeight: 1.2, marginBottom: 20 }}>
-            Meeting Invitation
+          <div style={{ fontSize: 48, fontWeight: 'bold', lineHeight: 1.2, marginBottom: 20 }}>
+            {decodeURIComponent(title)}
           </div>
           
           <div style={{ fontSize: 36, marginTop: 10, marginBottom: 10, color: 'rgba(255,255,255,0.9)' }}>
-            You've been invited to join a meeting
+            {decodeURIComponent(organizer)} has invited you
           </div>
 
           <div style={{ fontSize: 24, marginTop: 20, color: 'rgba(255,255,255,0.8)' }}>
-            Click to join on Codavra
+            {decodeURIComponent(description)}
           </div>
         </div>
       </div>
@@ -59,7 +65,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       height: 630,
       headers: {
         'Content-Type': 'image/png',
-        'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+        'Cache-Control': 'no-cache, no-store',
       }
     }
   );
