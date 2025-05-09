@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { createCanvas, loadImage, GlobalFonts } from 'https://deno.land/x/canvas@v1.4.1/mod.ts';
-import { encode as encodeBase64 } from "https://deno.land/std@0.177.0/encoding/base64.ts";
+import { createCanvas, loadImage } from 'https://deno.land/x/canvas@v1.4.1/mod.ts';
 
 // Register fonts (add actual font files to your project and reference them here)
 try {
@@ -10,6 +9,94 @@ try {
   // GlobalFonts.registerFromPath("./fonts/Inter-Regular.ttf", "Inter-Regular");
 } catch (e) {
   console.error("Error loading fonts:", e);
+}
+
+// Helper function to draw rounded rectangle (since roundRect isn't universally supported)
+function drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height - radius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  ctx.lineTo(x + radius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+}
+
+// Helper function for drawing centered text
+function drawCenteredText(ctx: CanvasRenderingContext2D, text: string, centerX: number, y: number, maxWidth?: number) {
+  // Measure the text
+  const metrics = ctx.measureText(text);
+  const textWidth = metrics.width;
+  
+  // Don't render if it's too wide
+  if (maxWidth && textWidth > maxWidth) {
+    return false;
+  }
+  
+  // Calculate starting X position to center text
+  const x = centerX - (textWidth / 2);
+  
+  // Draw text
+  ctx.fillText(text, x, y);
+  return true;
+}
+
+// Break text into lines that fit a width and draw them centered
+function drawCenteredParagraph(ctx: CanvasRenderingContext2D, text: string, centerX: number, startY: number, lineHeight: number, maxWidth: number, maxLines = 3) {
+  const words = text.split(' ');
+  let currentLine = '';
+  let lines = [];
+  
+  // Build lines that fit
+  for (let i = 0; i < words.length; i++) {
+    const testLine = currentLine + (currentLine ? ' ' : '') + words[i];
+    const metrics = ctx.measureText(testLine);
+    
+    if (metrics.width > maxWidth && currentLine !== '') {
+      lines.push(currentLine);
+      currentLine = words[i];
+      
+      // Stop if we hit the max lines
+      if (lines.length >= maxLines - 1) {
+        // Check if we can fit the rest
+        const restOfText = words.slice(i).join(' ');
+        const restMetrics = ctx.measureText(restOfText);
+        
+        if (restMetrics.width <= maxWidth) {
+          lines.push(restOfText);
+        } else {
+          // Add the current word plus ellipsis
+          lines.push(words[i] + '...');
+        }
+        break;
+      }
+    } else {
+      currentLine = testLine;
+    }
+  }
+  
+  // Add the last line if we haven't hit max and there's text left
+  if (currentLine !== '' && lines.length < maxLines) {
+    lines.push(currentLine);
+  }
+  
+  // Calculate total height of text
+  const totalHeight = lines.length * lineHeight;
+  
+  // Draw each line
+  let y = startY - (totalHeight / 2) + (lineHeight / 2);
+  
+  for (let i = 0; i < lines.length; i++) {
+    const x = centerX - (ctx.measureText(lines[i]).width / 2);
+    ctx.fillText(lines[i], x, y);
+    y += lineHeight;
+  }
+  
+  return startY + (totalHeight / 2);
 }
 
 serve(async (req) => {
@@ -28,25 +115,35 @@ serve(async (req) => {
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext("2d");
     
-    // Set background - gold gradient
-    const gradient = ctx.createLinearGradient(0, 0, width, height);
-    gradient.addColorStop(0, '#854d0e');
-    gradient.addColorStop(0.25, '#a16207');
-    gradient.addColorStop(0.5, '#ca8a04');
-    gradient.addColorStop(0.75, '#eab308');
-    gradient.addColorStop(1, '#facc15');
+    // Load and draw background image
+    try {
+      const backgroundImage = await loadImage('https://www.codavra.com/image.png');
+      ctx.drawImage(backgroundImage, 0, 0, width, height);
+    } catch (imgError) {
+      console.error("Error loading background image, using fallback gradient:", imgError);
+      
+      // Fallback to gradient if image loading fails
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, '#854d0e');
+      gradient.addColorStop(0.25, '#a16207');
+      gradient.addColorStop(0.5, '#ca8a04');
+      gradient.addColorStop(0.75, '#eab308');
+      gradient.addColorStop(1, '#facc15');
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+    }
     
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height * 0.65);
-    
-    // Set bottom section background
-    ctx.fillStyle = '#065f46';
-    ctx.fillRect(0, height * 0.65, width, height * 0.35);
+    // Card dimensions with a small margin
+    const cardMargin = 20;
+    const cardX = cardMargin;
+    const cardY = cardMargin;
+    const cardWidth = width - (cardMargin * 2);
+    const cardHeight = height - (cardMargin * 2);
     
     // Draw card for invitation section
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-    ctx.beginPath();
-    ctx.roundRect(width * 0.1, height * 0.1, width * 0.8, height * 0.45, 20);
+    drawRoundedRect(ctx, cardX, cardY, cardWidth, cardHeight, 20);
     ctx.fill();
     
     // Add border to card
@@ -54,40 +151,43 @@ serve(async (req) => {
     ctx.lineWidth = 1;
     ctx.stroke();
     
-    // Add text - title
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 48px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Meeting Invitation', width / 2, height * 0.25);
+    // Decoded text
+    const formattedTitle = decodeURIComponent(title);
+    const formattedOrganizer = decodeURIComponent(organizer);
+    const formattedDescription = decodeURIComponent(description);
     
-    // Add subtitle
+    // The true center point
+    const centerX = width / 2;
+    
+    // Reference point for vertical positioning
+    let currentY = height * 0.3; // Start at 30% down
+    
+    // Main invitation text
+    const inviterText = `${formattedOrganizer} invited you to ${formattedTitle}`;
+    
+    // Draw invitation - use our helper functions
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 46px sans-serif';
+    currentY = drawCenteredParagraph(ctx, inviterText, centerX, currentY, 52, width * 0.7, 3);
+    
+    // Add spacing
+    currentY += 40;
+    
+    // Draw description
     ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.font = '24px sans-serif';
-    ctx.fillText("You've been invited to join a meeting", width / 2, height * 0.32);
+    currentY = drawCenteredParagraph(ctx, formattedDescription, centerX, currentY, 30, width * 0.7, 3);
     
-    // Add call to action
+    // Add call to action (centered by our helper)
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.font = '18px sans-serif';
+    const ctaY = height * 0.8;
+    drawCenteredText(ctx, 'Click to join on Codavra', centerX, ctaY);
+    
+    // Website URL (centered by our helper)
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
     ctx.font = '16px sans-serif';
-    ctx.fillText('Click to join on Codavra', width / 2, height * 0.38);
-    
-    // Draw meeting details in bottom section
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 30px sans-serif';
-    ctx.textAlign = 'left';
-    
-    // Need to handle text wrapping for longer titles
-    const inviterText = `${decodeURIComponent(organizer)} has invited you to ${decodeURIComponent(title)}`;
-    wrapText(ctx, inviterText, 40, height * 0.75, width - 80, 36);
-    
-    // Description
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-    ctx.font = '20px sans-serif';
-    wrapText(ctx, decodeURIComponent(description), 40, height * 0.85, width - 80, 24);
-    
-    // Website
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-    ctx.font = '16px sans-serif';
-    ctx.fillText('www.codavra.com', 40, height - 40);
+    drawCenteredText(ctx, 'www.codavra.com', centerX, ctaY + 30);
     
     // Convert canvas to PNG
     const pngData = canvas.toBuffer("image/png");
@@ -103,56 +203,4 @@ serve(async (req) => {
     console.error("Error generating image:", error);
     return new Response(`Error generating image: ${error.message}`, { status: 500 });
   }
-});
-
-// Helper function to wrap text
-function wrapText(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  maxWidth: number,
-  lineHeight: number
-) {
-  const words = text.split(' ');
-  let line = '';
-  let testLine = '';
-  let lineCount = 0;
-
-  for (let n = 0; n < words.length; n++) {
-    testLine = line + words[n] + ' ';
-    const metrics = ctx.measureText(testLine);
-    const testWidth = metrics.width;
-    
-    if (testWidth > maxWidth && n > 0) {
-      ctx.fillText(line, x, y);
-      line = words[n] + ' ';
-      y += lineHeight;
-      lineCount++;
-      
-      if (lineCount >= 2) {
-        // Add ellipsis if we have more than 2 lines
-        if (n < words.length - 1) {
-          // Remove last word and add ellipsis
-          const lastSpaceIndex = line.lastIndexOf(' ');
-          if (lastSpaceIndex > 0) {
-            line = line.substring(0, lastSpaceIndex) + '...';
-          } else {
-            line = line.substring(0, line.length - 1) + '...';
-          }
-          ctx.fillText(line, x, y);
-        } else {
-          ctx.fillText(line, x, y);
-        }
-        break;
-      }
-    } else {
-      line = testLine;
-    }
-  }
-  
-  // If we haven't reached max lines, print the last line
-  if (lineCount < 2) {
-    ctx.fillText(line, x, y);
-  }
-} 
+}); 

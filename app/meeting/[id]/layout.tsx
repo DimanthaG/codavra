@@ -40,6 +40,9 @@ export async function generateMetadata(
     // Use Supabase Edge Function for OG image generation
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
     const ogImageUrl = `${supabaseUrl}/functions/v1/og-image?title=${encodedTitle}&organizer=${encodedOrganizer}&description=${encodedDescription}&id=${params.id}&t=${timestamp}`;
+    
+    // The complete URL for this meeting
+    const meetingUrl = `${baseUrl}/meeting/${params.id}`;
 
     return {
       title: title,
@@ -48,25 +51,38 @@ export async function generateMetadata(
         title: title,
         description: description,
         type: 'website',
-        url: `${baseUrl}/meeting/${params.id}`,
+        url: meetingUrl,
         siteName: 'Codavra',
         images: [
           {
             url: ogImageUrl,
             width: 1200,
             height: 630,
-            alt: 'Meeting Invitation'
+            alt: 'Meeting Invitation',
+            type: 'image/png',
           }
         ],
+        locale: 'en_US',
       },
       twitter: {
         card: 'summary_large_image',
         title: title,
         description: description,
         images: [ogImageUrl],
+        site: '@codavra',
       },
       alternates: {
-        canonical: `${baseUrl}/meeting/${params.id}`
+        canonical: meetingUrl
+      },
+      other: {
+        // WhatsApp specific meta tags
+        'og:image:width': '1200',
+        'og:image:height': '630',
+        'og:image:alt': 'Meeting Invitation',
+        'theme-color': '#f97316', // Orange color for branded theme
+        // Force large image preview format
+        'twitter:card': 'summary_large_image',
+        'format-detection': 'telephone=no',
       }
     };
   } catch (error) {
