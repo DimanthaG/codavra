@@ -160,23 +160,23 @@ export default function AdminMeetings() {
   }
 
   return (
-    <div className="min-h-screen p-4 relative">
+    <div className="min-h-screen p-2 sm:p-4 relative">
       <div className="container mx-auto max-w-4xl">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-white">Manage Meetings</h1>
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold text-white">Manage Meetings</h1>
           <button
             onClick={() => router.push('/meeting/create')}
-            className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
+            className="w-full sm:w-auto px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors text-sm sm:text-base"
           >
             Back to Create
           </button>
         </div>
 
-        <div className="grid gap-6">
+        <div className="grid gap-4 sm:gap-6">
           {meetings.map((meeting) => (
             <div
               key={meeting.id}
-              className="bg-white/10 backdrop-blur-lg p-6 rounded-xl border border-white/20"
+              className="bg-white/10 backdrop-blur-lg p-4 sm:p-6 rounded-xl border border-white/20"
             >
               {editingMeeting?.id === meeting.id ? (
                 <div className="space-y-4">
@@ -184,26 +184,28 @@ export default function AdminMeetings() {
                     type="text"
                     value={editingMeeting.title}
                     onChange={(e) => setEditingMeeting({ ...editingMeeting, title: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white"
+                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm sm:text-base"
                   />
                   <textarea
                     value={editingMeeting.description}
                     onChange={(e) => setEditingMeeting({ ...editingMeeting, description: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white"
+                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm sm:text-base"
                     rows={4}
                   />
-                  <input
-                    type="date"
-                    value={editingMeeting.date}
-                    onChange={(e) => setEditingMeeting({ ...editingMeeting, date: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white"
-                  />
-                  <input
-                    type="time"
-                    value={editingMeeting.time}
-                    onChange={(e) => setEditingMeeting({ ...editingMeeting, time: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white"
-                  />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input
+                      type="date"
+                      value={editingMeeting.date}
+                      onChange={(e) => setEditingMeeting({ ...editingMeeting, date: e.target.value })}
+                      className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm sm:text-base"
+                    />
+                    <input
+                      type="time"
+                      value={editingMeeting.time}
+                      onChange={(e) => setEditingMeeting({ ...editingMeeting, time: e.target.value })}
+                      className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm sm:text-base"
+                    />
+                  </div>
                   <div className="flex items-center">
                     <input
                       type="checkbox"
@@ -218,73 +220,93 @@ export default function AdminMeetings() {
                   <div className="flex justify-end gap-2">
                     <button
                       onClick={() => setEditingMeeting(null)}
-                      className="px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors"
+                      className="px-3 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-colors text-sm sm:text-base"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={() => handleUpdate(editingMeeting)}
-                      className="px-4 py-2 bg-green-500/20 text-green-500 rounded-lg hover:bg-green-500/30 transition-colors"
+                      className="px-3 py-2 bg-green-500/20 text-green-500 rounded-lg hover:bg-green-500/30 transition-colors text-sm sm:text-base"
                     >
                       Save
                     </button>
                   </div>
                 </div>
               ) : (
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h2 className="text-2xl font-semibold text-white mb-2">{meeting.title}</h2>
-                    <p className="text-white/80 mb-4">{meeting.description}</p>
-                    <div className="text-sm text-white/60">
-                      <p>Date: {new Date(meeting.date).toLocaleDateString()}</p>
-                      <p>Time: {meeting.time}</p>
-                      <p>Created by: {meeting.created_by}</p>
-                      <p className="mt-2">Allow Join: {meeting.allow_join ? 'Yes' : 'No'}</p>
-                    </div>
-
-                    {meeting.participants?.length > 0 && (
-                      <div className="mt-4">
-                        <h3 className="text-lg font-semibold text-white mb-2">Participants</h3>
-                        <div className="space-y-2">
-                          {meeting.participants.map((participant, index) => (
-                            <div key={index} className="flex items-center gap-2">
-                              <img
-                                src={participant.image}
-                                alt={participant.name}
-                                className="w-8 h-8 rounded-full"
-                              />
-                              <span className="text-white">{participant.name}</span>
-                            </div>
-                          ))}
-                        </div>
+                <div>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                    <div>
+                      <h2 className="text-xl sm:text-2xl font-semibold text-white mb-2">{meeting.title}</h2>
+                      <p className="text-white/80 mb-3 text-sm sm:text-base">{meeting.description}</p>
+                      <div className="text-xs sm:text-sm text-white/60">
+                        <p>Date: {new Date(meeting.date).toLocaleDateString()}</p>
+                        <p>Time: {meeting.time}</p>
+                        <p>Created by: {meeting.created_by}</p>
+                        <p className="mt-1">Allow Join: {meeting.allow_join ? 'Yes' : 'No'}</p>
                       </div>
-                    )}
+                    </div>
+                    
+                    <div className="flex gap-2 mt-3 sm:mt-0">
+                      <button
+                        onClick={() => router.push(`/meeting/${meeting.id}`)}
+                        className="px-3 py-1.5 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors text-xs sm:text-sm"
+                      >
+                        View
+                      </button>
+                      <button
+                        onClick={() => setEditingMeeting(meeting)}
+                        className="px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-xs sm:text-sm"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (window.confirm('Are you sure you want to delete this meeting?')) {
+                            handleDelete(meeting.id);
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-red-600/80 text-white rounded hover:bg-red-700 transition-colors text-xs sm:text-sm"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
-                  
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => router.push(`/meeting/${meeting.id}`)}
-                      className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
-                    >
-                      View
-                    </button>
-                    <button
-                      onClick={() => setEditingMeeting(meeting)}
-                      className="px-4 py-2 bg-blue-500/20 text-blue-500 rounded-lg hover:bg-blue-500/30 transition-colors"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(meeting.id)}
-                      className="px-4 py-2 bg-red-500/20 text-red-500 rounded-lg hover:bg-red-500/30 transition-colors"
-                    >
-                      Delete
-                    </button>
-                  </div>
+
+                  {meeting.participants?.length > 0 && (
+                    <div className="mt-4 border-t border-white/10 pt-3">
+                      <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
+                        Participants ({meeting.participants.length})
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {meeting.participants.map((participant, index) => (
+                          <div key={index} className="flex items-center gap-2 bg-white/5 p-2 rounded-lg">
+                            <img
+                              src={participant.image || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'}
+                              alt={participant.name}
+                              className="w-6 h-6 sm:w-8 sm:h-8 rounded-full"
+                              onError={(e) => {
+                                e.currentTarget.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+                              }}
+                            />
+                            <div className="overflow-hidden">
+                              <p className="text-white text-xs sm:text-sm truncate">{participant.name}</p>
+                              <p className="text-white/60 text-xs truncate">{participant.email}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
           ))}
+          
+          {meetings.length === 0 && (
+            <div className="bg-white/10 backdrop-blur-lg p-4 sm:p-6 rounded-xl border border-white/20 text-center">
+              <p className="text-white text-sm sm:text-base">No meetings found</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

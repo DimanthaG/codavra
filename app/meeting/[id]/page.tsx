@@ -176,57 +176,59 @@ export default function MeetingPage() {
     meeting?.participants?.some(p => p.email === session.user.email);
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative p-4">
+    <div className="min-h-screen flex items-center justify-center p-2 sm:p-4">
       {meeting ? (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-2xl border border-white/20 w-full max-w-2xl"
+          className="bg-white/10 backdrop-blur-lg p-4 sm:p-8 rounded-2xl shadow-2xl border border-white/20 w-full max-w-xl md:max-w-2xl"
         >
-          <div className="flex justify-between items-start mb-8">
-            <h1 className="text-4xl font-bold text-white">{meeting.title}</h1>
-            <WhatsAppShareButton 
-              meetingId={meeting.id} 
-              title={meeting.title} 
-              description={meeting.description} 
-            />
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-4xl font-bold text-white break-words">{meeting.title}</h1>
+            <div className="flex-shrink-0">
+              <WhatsAppShareButton 
+                meetingId={meeting.id} 
+                title={meeting.title} 
+                description={meeting.description} 
+              />
+            </div>
           </div>
 
-          <div className="space-y-6 text-white">
+          <div className="space-y-4 sm:space-y-6 text-white">
             <div>
-              <h2 className="text-xl font-semibold mb-2">When</h2>
-              <p className="text-white/80">
+              <h2 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">When</h2>
+              <p className="text-white/80 text-sm sm:text-base">
                 {formattedDate} at {meeting.time}
               </p>
             </div>
 
             <div>
-              <h2 className="text-xl font-semibold mb-2">Description</h2>
-              <p className="text-white/80 whitespace-pre-wrap">{meeting.description}</p>
+              <h2 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Description</h2>
+              <p className="text-white/80 whitespace-pre-wrap text-sm sm:text-base">{meeting.description}</p>
             </div>
 
             <div>
-              <h2 className="text-xl font-semibold mb-2">Organizer</h2>
+              <h2 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Organizer</h2>
               <div className="flex items-center gap-3 bg-white/5 p-3 rounded-lg">
                 <img
                   src={meeting.created_by_image}
                   alt={meeting.created_by_name}
-                  className="w-10 h-10 rounded-full"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
                   onError={(e) => {
                     e.currentTarget.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
                   }}
                 />
-                <span className="text-white/90">{meeting.created_by_name}</span>
+                <span className="text-white/90 text-sm sm:text-base">{meeting.created_by_name}</span>
               </div>
             </div>
 
             {meeting.allow_join && (
-              <div className="pt-6">
+              <div className="pt-4 sm:pt-6">
                 {!session ? (
                   <button
                     onClick={handleSignIn}
-                    className="block w-full bg-white text-gray-900 py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors text-center"
+                    className="block w-full bg-white text-gray-900 py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors text-center text-sm sm:text-base"
                   >
                     Sign in to Join
                   </button>
@@ -234,12 +236,12 @@ export default function MeetingPage() {
                   <button
                     onClick={handleJoin}
                     disabled={isJoining}
-                    className="w-full bg-white text-gray-900 py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:opacity-50"
+                    className="w-full bg-white text-gray-900 py-3 px-6 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:opacity-50 text-sm sm:text-base"
                   >
                     {isJoining ? 'Joining...' : 'Join'}
                   </button>
                 ) : (
-                  <div className="w-full bg-green-500/20 text-green-500 py-3 px-6 rounded-lg font-medium text-center">
+                  <div className="w-full bg-green-500/20 text-green-500 py-3 px-6 rounded-lg font-medium text-center text-sm sm:text-base">
                     You've Joined
                   </div>
                 )}
@@ -247,28 +249,36 @@ export default function MeetingPage() {
             )}
 
             {meeting.participants?.length > 0 && (
-              <div className="pt-6">
-                <h2 className="text-xl font-semibold mb-4">Participants</h2>
+              <div className="pt-4 sm:pt-6">
+                <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">Participants</h2>
                 <div className="grid gap-3">
                   {meeting.participants.map((participant, index) => (
-                    <div key={index} className="flex items-center gap-3 bg-white/5 p-3 rounded-lg">
+                    <div key={index} className="flex items-center gap-3 bg-white/5 p-2 sm:p-3 rounded-lg">
                       <img
                         src={participant.image}
                         alt={participant.name}
-                        className="w-10 h-10 rounded-full"
+                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
                         onError={(e) => {
                           e.currentTarget.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
                         }}
                       />
-                      <span className="text-white/90">{participant.name}</span>
+                      <span className="text-white/90 text-sm sm:text-base">{participant.name}</span>
                     </div>
                   ))}
                 </div>
               </div>
             )}
           </div>
+
+          <div className="mt-6 pt-4 border-t border-white/10 text-center text-xs text-white/40">
+            <p>Meeting link shared via Codavra</p>
+          </div>
         </motion.div>
-      ) : null}
+      ) : (
+        <div className="p-8 bg-white/5 backdrop-blur-md rounded-xl shadow-lg w-full max-w-md flex items-center justify-center">
+          <div className="animate-pulse h-6 w-24 bg-white/20 rounded"></div>
+        </div>
+      )}
     </div>
   );
 } 
