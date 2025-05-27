@@ -3,7 +3,7 @@ import './globals.css';
 import { Providers } from './providers';
 import { Inter } from 'next/font/google';
 import dynamic from 'next/dynamic';
-
+import { Analytics } from '@vercel/analytics/react';
 // Import GradientBackground component outside of the RootLayout to prevent SSR
 const GradientBackground = dynamic(() => import('@/components/GradientBackground'), { ssr: false });
 
@@ -43,6 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Analytics />
       <body className={`${inter.className} relative min-h-screen`}>
         <Providers>
           <div className="absolute inset-0 -z-10 overflow-hidden">
