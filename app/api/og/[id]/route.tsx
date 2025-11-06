@@ -2,8 +2,6 @@ import React from 'react';
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
-export const runtime = 'edge';
-
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   const id = params.id;
   const searchParams = request.nextUrl.searchParams;
